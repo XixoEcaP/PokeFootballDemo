@@ -42,7 +42,7 @@ const GameField = ({ setScore }) => {
   ]);
   const [aiPlayers, setAIPlayers] = useState([
     { id: 3, type: 'charizard', x: 18, y: 10, direction: 0, hasBall: false, role: 'defender' },
-    { id: 4, type: 'pikachu', x: 10, y: 5, direction: 1, hasBall: false, role: 'forward' },
+    { id: 4, type: 'pikachu', x: 6, y: 8, direction: 1, hasBall: false, role: 'forward' },
   ]);
   const [activePlayerId, setActivePlayerId] = useState(1);
   const [ball, setBall] = useState({ x: 1, y: 1, direction: 0, possessedBy: 1 });
@@ -58,14 +58,17 @@ const GameField = ({ setScore }) => {
     
     if (!goalScored && tileValue === 2) {
       setGoalScored(true);
+      setBall({ x: Math.floor(FIELD_WIDTH / 2), y: Math.floor(FIELD_HEIGHT / 2), direction: 0, possessedBy: null });
+      setGoalScored(false); // Reset goal flag after ball reset
+      setTimeout(() => {  
       setScore(score => {
         const newScore = { ...score, team1: score.team1 + 0.5 };
         console.log(`Goal for team 1! Score: Team 1 - ${newScore.team1}, Team 2 - ${newScore.team2}`);
-        setTimeout(() => {
-          setBall({ x: Math.floor(FIELD_WIDTH / 2), y: Math.floor(FIELD_HEIGHT / 2), direction: 0, possessedBy: null });
-          setGoalScored(false); // Reset goal flag after ball reset
-        }, 200); // Delay in milliseconds for resetting the ball position
         return newScore;
+      }, 200);
+         
+       // Delay in milliseconds for resetting the ball position
+       
       });
     } else if (!goalScored && tileValue === 3) {
       setGoalScored(true);
@@ -242,7 +245,7 @@ const GameField = ({ setScore }) => {
   
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null }));
     updatePlayerBallPossession(activePlayerId, false);
-    checkGoal(newBallX, newBallY);
+
   }, [ball.direction, ball.x, ball.y, activePlayerId, checkGoal]);
   
 
@@ -292,10 +295,11 @@ const GameField = ({ setScore }) => {
           shootBallDiagonally();
         }
         return;
-      case 'a': // Change control while not having the ball
-       
+        case 'a': // Change control while not having the ball
+        if (ball.possessedBy === null || ball.possessedBy === 3|| ball.possessedBy === 4) {
           changeControl();
-        
+        }
+        console.log(`Ball possessed by player ${ball.possessedBy}`);
         return;
       default:
         

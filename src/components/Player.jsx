@@ -44,3 +44,4 @@ const Player = ({ type, x, y, direction }) => {
 };
 
 export default Player;
+
