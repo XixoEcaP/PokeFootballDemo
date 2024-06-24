@@ -5,6 +5,8 @@ import AIPlayer from './AIPlayer';
 import Ball from './Ball';
 import field from '../assets/field.png';
 
+import './GameField.css';
+
 const TILE_SIZE = 32;
 const FIELD_WIDTH = 22;
 const FIELD_HEIGHT = 15;
@@ -335,7 +337,7 @@ const GameField = ({ setScore }) => {
 
   
   return (
-    <Field>
+    <Field class = "game-field">
      {players.map(player => (
         <Player key={player.id} type={player.id === 1 ? "gengar" : "nidoking"} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} />
       ))}
