@@ -5,8 +5,6 @@ import AIPlayer from './AIPlayer';
 import Ball from './Ball';
 import field from '../assets/field.png';
 
-import './GameField.css';
-
 const TILE_SIZE = 32;
 const FIELD_WIDTH = 22;
 const FIELD_HEIGHT = 15;
@@ -20,7 +18,7 @@ const Field = styled.div`
 `;
 
 const walkableMap = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -33,78 +31,64 @@ const walkableMap = [
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
 ];
 
-const GameField = ({ setScore }) => {
-  const [players, setPlayers] = useState([
-    { id: 1, x: 1, y: 1, direction: 0, hasBall: true },
-    { id: 2, x: 5, y: 1, direction: 0, hasBall: false },
-  ]);
-  const [aiPlayers, setAIPlayers] = useState([
-    { id: 3, type: 'charizard', x: 18, y: 10, direction: 0, hasBall: false, role: 'defender' },
-    { id: 4, type: 'pikachu', x: 6, y: 8, direction: 1, hasBall: false, role: 'forward' },
-  ]);
+const GameField = ({ setScore, playerTeam, aiTeam }) => {
+  const initialPlayerPositions = [
+    { id: 1, type: playerTeam.forward.split('.')[0], x: 10, y: 3, direction: 0, hasBall: false },
+    { id: 2, type: playerTeam.goalkeeper.split('.')[0], x: 1, y: 7, direction: 0, hasBall: false }
+  ];
+
+  const initialAIPositions = [
+    { id: 3, type: aiTeam.goalkeeper.split('.')[0], x: 18, y: 7, direction: 0, hasBall: false, role: 'goalkeeper' },
+    { id: 4, type: aiTeam.forward.split('.')[0], x: 14, y: 10, direction: 1, hasBall: false, role: 'forward' }
+  ];
+
+  const initialBallPosition = { x: 11, y: 7, direction: 0, possessedBy: null };
+
+  const [players, setPlayers] = useState(initialPlayerPositions);
+  const [aiPlayers, setAIPlayers] = useState(initialAIPositions);
+  const [ball, setBall] = useState(initialBallPosition);
   const [activePlayerId, setActivePlayerId] = useState(1);
-  const [ball, setBall] = useState({ x: 1, y: 1, direction: 0, possessedBy: 1 });
+  const [goalScored, setGoalScored] = useState(false);
 
   const isWalkable = (x, y) => {
     return walkableMap[y] && walkableMap[y][x] !== 0;
   };
 
-  const [goalScored, setGoalScored] = useState(false);
+  const resetPositions = () => {
+    setPlayers(initialPlayerPositions);
+    setAIPlayers(initialAIPositions);
+    setBall({ ...initialBallPosition, possessedBy: null });
+  };
 
-  const checkGoal = useCallback((x, y) => {
+  const checkGoal = useCallback(() => {
+    const { x, y } = ball;
     const tileValue = walkableMap[y][x];
-    
-    if (!goalScored && tileValue === 2) {
-      setGoalScored(true);
-      setBall({ x: Math.floor(FIELD_WIDTH / 2), y: Math.floor(FIELD_HEIGHT / 2), direction: 0, possessedBy: null });
-      setGoalScored(false); // Reset goal flag after ball reset
-      setTimeout(() => {  
-      setScore(score => {
-        const newScore = { ...score, team1: score.team1 + 0.5 };
-        console.log(`Goal for team 1! Score: Team 1 - ${newScore.team1}, Team 2 - ${newScore.team2}`);
-        return newScore;
-      }, 200);
-         
-       // Delay in milliseconds for resetting the ball position
-       
-      });
-    } else if (!goalScored && tileValue === 3) {
-      setGoalScored(true);
-      setScore(score => {
-        const newScore = { ...score, team2: score.team2 + 0.5 };
-        console.log(`Goal for team 2! Score: Team 1 - ${newScore.team1}, Team 2 - ${newScore.team2}`);
-        setTimeout(() => {
-          setBall({ x: Math.floor(FIELD_WIDTH / 2), y: Math.floor(FIELD_HEIGHT / 2), direction: 0, possessedBy: null });
-          setGoalScored(false); // Reset goal flag after ball reset
-        }, 200); // Delay in milliseconds for resetting the ball position
-        return newScore;
-      });
-    }
-  }, [walkableMap, setScore, setBall, goalScored, setGoalScored, FIELD_WIDTH, FIELD_HEIGHT]);
-  
-  
-  
-  
-  const handleTileValue = useCallback((x, y) => {
-    const tileValue = walkableMap[y][x]; // Assuming walkableMap is defined somewhere
-    
-    if (tileValue === 2 || tileValue === 3) {
-      setBall({
-        x: Math.floor(FIELD_WIDTH / 2),
-        y: Math.floor(FIELD_HEIGHT / 2),
-        direction: 0,
-        possessedBy: null
-      });
-    }
-  }, [setBall]); // Ensure setBall is a dependency in useCallback
-  
 
-
-  // Other functions and event handlers remain the same
+    if (!goalScored && (tileValue === 2 || tileValue === 3)) {
+      setGoalScored(true);
+      if (tileValue === 2) {
+        setScore(score => ({ ...score, team1: score.team1 + 1 }));
+        console.log(`Goal for team 1!`);
+      } else {
+        setScore(score => ({ ...score, team2: score.team2 + 1 }));
+        console.log(`Goal for team 2!`);
+      }
+      setTimeout(() => {
+        resetPositions();
+        setGoalScored(false);
+      }, 1000); // Delay for 1 second before resetting positions
+    } else if (tileValue === 0) {
+      setGoalScored(true);
+      setTimeout(() => {
+        resetPositions();
+        setGoalScored(false);
+      }, 1000); // Delay for 1 second before resetting positions
+    }
+  }, [ball, goalScored, resetPositions, setScore]);
 
   const updatePlayerPosition = useCallback((id, x, y, direction) => {
     if (!isWalkable(x, y)) return;
@@ -123,7 +107,6 @@ const GameField = ({ setScore }) => {
   const setBallPositionInFrontOfPlayer = useCallback((playerX, playerY, direction) => {
     let newBallX = playerX;
     let newBallY = playerY;
-   
 
     switch (direction) {
       case 0: // Down
@@ -147,10 +130,8 @@ const GameField = ({ setScore }) => {
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
     newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
 
-   
-
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction }));
-  }, [checkGoal]);
+  }, []);
 
   const checkCollision = useCallback((playerX, playerY, playerId) => {
     if (
@@ -168,7 +149,7 @@ const GameField = ({ setScore }) => {
     const otherPlayer = players.find(player => player.id !== activePlayerId);
 
     if (ball.possessedBy === activePlayer.id) {
-      setBall(ball => ({ ...ball, x: otherPlayer.x, y: otherPlayer.y, possessedBy: otherPlayer.id }));
+      setBall(ball => ({ ...ball, x: otherPlayer.x, y: otherPlayer.y + 1, possessedBy: otherPlayer.id }));
       updatePlayerBallPossession(activePlayer.id, false);
       updatePlayerBallPossession(otherPlayer.id, true);
       setActivePlayerId(otherPlayer.id);
@@ -208,17 +189,15 @@ const GameField = ({ setScore }) => {
         break;
     }
 
-
-
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null }));
     updatePlayerBallPossession(activePlayerId, false);
-  }, [ball.direction, ball.x, ball.y, activePlayerId, checkGoal]);
+  }, [ball.direction, ball.x, ball.y, activePlayerId]);
 
   const shootBallDiagonally = useCallback(() => {
     let newBallX = ball.x;
     let newBallY = ball.y;
     const fieldCenterY = Math.floor(FIELD_HEIGHT / 2);
-  
+
     if (ball.y < fieldCenterY) { // Player is in the top half of the field
       newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + 7); // Shoot downwards
       switch (ball.direction) {
@@ -244,12 +223,10 @@ const GameField = ({ setScore }) => {
           break;
       }
     }
-  
+
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null }));
     updatePlayerBallPossession(activePlayerId, false);
-
-  }, [ball.direction, ball.x, ball.y, activePlayerId, checkGoal]);
-  
+  }, [ball.direction, ball.x, ball.y, activePlayerId]);
 
   const changeControl = useCallback(() => {
     setActivePlayerId(activePlayerId === 1 ? 2 : 1);
@@ -262,25 +239,19 @@ const GameField = ({ setScore }) => {
     let newDirection = activePlayer.direction;
 
     switch (e.key) {
-      
-      
       case 'ArrowUp':
-        
         newY = Math.max(0, activePlayer.y - 1);
         newDirection = 3;
         break;
       case 'ArrowDown':
-      
         newY = Math.min(FIELD_HEIGHT - 1, activePlayer.y + 1);
         newDirection = 0;
         break;
       case 'ArrowLeft':
-      
         newX = Math.max(0, activePlayer.x - 1);
         newDirection = 1;
         break;
       case 'ArrowRight':
-      
         newX = Math.min(FIELD_WIDTH - 1, activePlayer.x + 1);
         newDirection = 2;
         break;
@@ -293,18 +264,17 @@ const GameField = ({ setScore }) => {
         }
         return;
       case 'q': // Shoot diagonally
-        if (ball.possessedBy !== null) {
+        if (ball.possessedBy !== null && ball.possessedBy !== 3 && ball.possessedBy !== 4) {
           shootBallDiagonally();
         }
         return;
-        case 'a': // Change control while not having the ball
-        if (ball.possessedBy === null || ball.possessedBy === 3|| ball.possessedBy === 4) {
+      case 'a': // Change control while not having the ball
+        if (ball.possessedBy === null || ball.possessedBy === 3 || ball.possessedBy === 4) {
           changeControl();
         }
         console.log(`Ball possessed by player ${ball.possessedBy}`);
         return;
       default:
-        
         return;
     }
 
@@ -335,11 +305,18 @@ const GameField = ({ setScore }) => {
     };
   }, [handleKeyDown]);
 
-  
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      checkGoal();
+    }, 100);
+
+    return () => clearInterval(intervalId);
+  }, [checkGoal]);
+
   return (
-    <Field class = "game-field">
-     {players.map(player => (
-        <Player key={player.id} type={player.id === 1 ? "gengar" : "nidoking"} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} />
+    <Field className="game-field">
+      {players.map(player => (
+        <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} />
       ))}
       {aiPlayers.map(player => (
         <AIPlayer
@@ -351,11 +328,9 @@ const GameField = ({ setScore }) => {
           role={player.role}
           ball={ball}
           setBall={setBall}
-          forwardPosition={aiPlayers.find(p => p.id === 4)}
-          setAIPlayerPosition={() => {}}
-          walkableMap={walkableMap} // Pass walkableMap as a prop
-          checkGoal={checkGoal} // Pass checkGoal as a prop
-        
+          setAIPlayerPosition={updateAIPlayerPosition}
+          walkableMap={walkableMap}
+          goalScored={goalScored}
         />
       ))}
       <Ball x={ball.x} y={ball.y} direction={ball.direction} />
@@ -364,7 +339,6 @@ const GameField = ({ setScore }) => {
 };
 
 export default GameField;
-
 
 
 

@@ -4,11 +4,14 @@ import gengar from '../assets/gengar.png';
 import nidoking from '../assets/nidoking.png';
 import pikachu from '../assets/pikachu.png';
 import charizard from '../assets/charizard.png';
-import isPropValid from '@emotion/is-prop-valid';
+import arcanine from '../assets/arcanine.png';
+import blastoise from '../assets/blastoise.png';
+import bulbasaur from '../assets/bulbasaur.png';
+import vileplume from '../assets/vileplume.png';
+import psyduck from '../assets/psyduck.png';
+import jolteon from '../assets/jolteon.png';
 
-const Sprite = styled('div').withConfig({
-  shouldForwardProp: (prop) => isPropValid(prop) && prop !== '$sprite' && prop !== '$frame' && prop !== '$direction',
-})`
+const Sprite = styled.div`
   width: 64px;
   height: 64px;
   position: absolute;
@@ -34,8 +37,26 @@ const Player = ({ type, x, y, direction }) => {
     case 'charizard':
       sprite = charizard;
       break;
+    case 'arcanine':
+      sprite = arcanine;
+      break;
+    case 'blastoise':
+      sprite = blastoise;
+      break;
+    case 'bulbasaur':
+      sprite = bulbasaur;
+      break;
+    case 'vileplume':
+      sprite = vileplume;
+      break;
+    case 'psyduck':
+      sprite = psyduck;
+      break;
+    case 'jolteon':
+      sprite = jolteon;
+      break;
     default:
-      sprite = gengar;
+      sprite = gengar; // Default to gengar if type is not recognized
   }
 
   const frame = 0;
@@ -44,4 +65,7 @@ const Player = ({ type, x, y, direction }) => {
 };
 
 export default Player;
+
+
+
 

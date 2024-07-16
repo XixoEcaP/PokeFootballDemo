@@ -1,71 +1,172 @@
-/* Site.css */
-
 /* Base styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f0f0f0;
+  font-family: Arial, sans-serif;
+  font-size: 120%;
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  text-align: center;
+  min-height: 100vh;
+  padding: 0; /* Remove padding to eliminate blank space */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align content to the top to remove blank space */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+}
+
+.title {
+  font-size: 1.5em; /* Further reduce font size to save space */
+  margin: 5px 0; /* Reduce margins to save space */
+  color: #333;
+}
+
+.scoreboard {
+  margin: 5px 0; /* Further reduce margins to save space */
+  font-size: 1.2em; /* Slightly reduce font size */
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Reduce gap to save space */
+}
+
+.score {
+  margin: 0;
+  color: #666;
+}
+
+.instructions {
+  list-style-type: none;
+  padding: 5px;
+  margin: 10px 0; /* Further reduce margins to save space */
+  font-size: 1.2em; /* Slightly reduce font size */
+  color: #555;
+}
+
+.instruction {
+  margin: 2px 0; /* Reduce margin between instructions */
+}
+
+#mobile {
+  font-size: 0px;
+}
+
+/* Controls layout */
+.controls {
+  display: none; /* Hide controls by default (for desktop) */
+}
+
+.directional-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 120px; /* Increase width */
+}
+
+.horizontal-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.directional-buttons button {
+  width: 60px; /* Increase button size */
+  height: 60px; /* Increase button size */
+  margin: 10px; /* Increase margin */
+  font-size: 24px; /* Adjust font size */
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 15px; /* Increase gap between buttons */
+}
+
+.action-buttons button {
+  width: 60px; /* Increase button size */
+  height: 60px; /* Increase button size */
+  font-size: 24px; /* Adjust font size */
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+}
+
+/* Media queries for mobile devices */
+@media only screen and (max-width: 600px) {
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
-  
+
   .container {
-    text-align: center;
-    min-height: 95vh;
-    padding: 20px;
-    display: flex;
+    padding: 20px; /* Remove padding to eliminate blank space */
+    justify-content: flex-start; /* Align content to the top to remove blank space */
+    transform: scale(0.5); /* Scale down the content */
+    transform-origin: top; /* Align content to the top */
+  }
+
+  .instructions {
+    font-size: 0px;
+  }
+
+  #mobile {
+    font-size: 36px;
+  }
+
+  .controls {
+    display: flex; /* Show controls on mobile */
+    flex-direction: row;
+    justify-content: space-around;
+    width: 200%;
+    margin-top: 10px;
+  }
+
+  .directional-buttons {
     flex-direction: column;
     align-items: center;
+    width: auto;
   }
- 
-  
-  .title {
-    font-size: 3em;
-    margin: 20px 0;
-    color: #333;
-  }
-  .game-field{
 
-  }
-  
-  .scoreboard {
-    margin: 20px 0;
-    font-size: 1.5em;
+  .horizontal-buttons {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    width: 100%;
   }
-  
-  .score {
-    margin: 0;
-    color: #666;
-  }
-  
-  .instructions {
-    list-style-type: none;
-    padding: 0;
-    margin: 20px 0;
-    font-size: 1.2em;
-    color: #555;
-  }
-  
-  .instruction {
-    margin: 5px 0;
-  }
-#mobile{
-    font-size: 0px;
-}  
-  /* Media queries for mobile devices */
-  @media (max-width: 600px) {
-    body {
-        transform: scale(0.5);
-   
-    }
-    .instructions {
-        font-size: 0px;
-    }
-    #mobile{
-        font-size: 36px;
-    }  
 
+  .directional-buttons button {
+    width: 120px; /* Increase button size */
+    height: 120px; /* Increase button size */
+    margin: 20px; /* Increase margin */
+    font-size: 24px; /* Adjust font size */
   }
-  
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px; /* Ensure consistent gap */
+  }
+
+  .action-buttons button {
+    margin: 20px; 
+    width: 120px; /* Increase button size */
+    height: 120px; /* Increase button size */
+    font-size: 18px; /* Adjust font size */
+  }
+}
