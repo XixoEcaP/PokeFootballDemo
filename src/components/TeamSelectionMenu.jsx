@@ -29,7 +29,7 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam }) => {
         </select>
       </div>
       <div>
-        <label>AI Team: </label>
+        <label>Rival Team: </label>
         <select value={aiTeam} onChange={(e) => setAITeamLocal(e.target.value)}>
           {Object.keys(teams).map(team => (
             <option key={team} value={team}>{team}</option>

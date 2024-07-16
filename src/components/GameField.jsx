@@ -37,13 +37,13 @@ const walkableMap = [
 
 const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const initialPlayerPositions = [
-    { id: 1, type: playerTeam.forward.split('.')[0], x: 10, y: 3, direction: 0, hasBall: false },
+    { id: 1, type: playerTeam.forward.split('.')[0], x: 7, y: 2, direction: 0, hasBall: false },
     { id: 2, type: playerTeam.goalkeeper.split('.')[0], x: 1, y: 7, direction: 0, hasBall: false }
   ];
 
   const initialAIPositions = [
     { id: 3, type: aiTeam.goalkeeper.split('.')[0], x: 18, y: 7, direction: 0, hasBall: false, role: 'goalkeeper' },
-    { id: 4, type: aiTeam.forward.split('.')[0], x: 14, y: 10, direction: 1, hasBall: false, role: 'forward' }
+    { id: 4, type: aiTeam.forward.split('.')[0], x: 14, y: 12, direction: 1, hasBall: false, role: 'forward' }
   ];
 
   const initialBallPosition = { x: 11, y: 7, direction: 0, possessedBy: null };
