@@ -54,6 +54,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const [activePlayerId, setActivePlayerId] = useState(1);
   const [goalScored, setGoalScored] = useState(false);
   const [goalkeeperPosition, setGoalkeeperPosition] = useState({ x: 20, y: 7 });
+  const [movementInterval, setMovementInterval] = useState(null);
 
   const updateGoalkeeperPosition = (position) => {
     setGoalkeeperPosition(position);
