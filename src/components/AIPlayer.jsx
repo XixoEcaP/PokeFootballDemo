@@ -167,7 +167,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
       // Check collision with ball
       if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1) {
-        if (Math.random() > 0.5) { // Add randomness for possession
+        if (Math.random() > 0.2) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
         }
@@ -225,12 +225,13 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
     }, 200); // Update interval for faster movement
 
     return () => clearInterval(intervalId);
-  }, [goalScored, moveGoalkeeper, moveForward, player.role]);
+  }, [goalScored, moveGoalkeeper, moveForward, player.role, initialX, initialY]);
 
   return <Player type={type} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} sprite={sprite} />;
 };
 
 export default AIPlayer;
+
 
 
 
