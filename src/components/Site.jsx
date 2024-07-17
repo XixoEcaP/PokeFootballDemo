@@ -15,7 +15,9 @@ const Site = () => {
     setPressedKey(key);
   };
 
-  const handleKeyRelease = () => {
+  const handleKeyRelease = (key) => {
+    const event = new KeyboardEvent('keyup', { key });
+    window.dispatchEvent(event);
     setPressedKey(null);
   };
 
@@ -24,7 +26,7 @@ const Site = () => {
       setPressedKey(event.key);
     };
 
-    const handleKeyUp = () => {
+    const handleKeyUp = (event) => {
       setPressedKey(null);
     };
 
@@ -58,7 +60,7 @@ const Site = () => {
               <button
                 className={pressedKey === 'ArrowUp' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('ArrowUp')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('ArrowUp')}
               >
                 ↑
               </button>
@@ -66,14 +68,14 @@ const Site = () => {
                 <button
                   className={pressedKey === 'ArrowLeft' ? 'pressed' : ''}
                   onMouseDown={() => handleKeyPress('ArrowLeft')}
-                  onMouseUp={handleKeyRelease}
+                  onMouseUp={() => handleKeyRelease('ArrowLeft')}
                 >
                   ←
                 </button>
                 <button
                   className={pressedKey === 'ArrowRight' ? 'pressed' : ''}
                   onMouseDown={() => handleKeyPress('ArrowRight')}
-                  onMouseUp={handleKeyRelease}
+                  onMouseUp={() => handleKeyRelease('ArrowRight')}
                 >
                   →
                 </button>
@@ -81,7 +83,7 @@ const Site = () => {
               <button
                 className={pressedKey === 'ArrowDown' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('ArrowDown')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('ArrowDown')}
               >
                 ↓
               </button>
@@ -90,28 +92,28 @@ const Site = () => {
               <button
                 className={pressedKey === 'w' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('w')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('w')}
               >
                 Pass
               </button>
               <button
                 className={pressedKey === 's' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('s')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('s')}
               >
                 Shoot
               </button>
               <button
                 className={pressedKey === 'q' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('q')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('q')}
               >
                 Cross
               </button>
               <button
                 className={pressedKey === 'a' ? 'pressed' : ''}
                 onMouseDown={() => handleKeyPress('a')}
-                onMouseUp={handleKeyRelease}
+                onMouseUp={() => handleKeyRelease('a')}
               >
                 ChangeP
               </button>
@@ -126,6 +128,7 @@ const Site = () => {
 };
 
 export default Site;
+
 
 
 

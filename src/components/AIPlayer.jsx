@@ -178,18 +178,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         setBall(ball => ({ ...ball, x: newX, y: newY + 1 }));
 
         // Check if forward is in shooting range
-        if (newX <= 2) {
-          // Shoot the ball vertically
-          setBall(ball => ({
-            ...ball,
-            x: newX,
-            y: newY <= FIELD_HEIGHT / 2 ? Math.min(newY + 9, FIELD_HEIGHT - 1) : Math.max(newY - 9, 0),
-            possessedBy: null
-          }));
-          setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
-          setHasShot(true); // Set hasShot to true after shooting
-          setTimeout(() => setHasShot(false), 1000); // Reset hasShot after 1 second
-        } else if (newX <= 7) {
+       if (newX <= 7) {
           // Shoot the ball 9 tiles to the left
           if (newY <= 2) {
             // Shoot diagonally downwards
