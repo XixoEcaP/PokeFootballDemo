@@ -45,9 +45,9 @@ html, body {
 
 .instructions {
   list-style-type: none;
-  padding: 5px;
-  margin: 10px 0; /* Further reduce margins to save space */
-  font-size: 1.2em; /* Slightly reduce font size */
+  padding: 0;
+  margin: 5px 0; /* Further reduce margins to save space */
+  font-size: 1.em; /* Slightly reduce font size */
   color: #555;
 }
 

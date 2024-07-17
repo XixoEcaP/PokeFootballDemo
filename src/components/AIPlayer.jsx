@@ -30,7 +30,7 @@ const getSprite = (type) => {
   }
 };
 
-const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlayerPosition, walkableMap, goalScored }) => {
+const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlayerPosition, walkableMap, goalScored, aiPlayers }) => {
   const sprite = getSprite(type);
 
   const [player, setPlayer] = useState({
@@ -43,9 +43,15 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
   });
 
   const [firstNullHandled, setFirstNullHandled] = useState(false);
+  const [hasShot, setHasShot] = useState(false);
 
   const isWalkable = (x, y) => {
-    return walkableMap[y] && walkableMap[y][x] === 1;
+    return y >= 0 && y < FIELD_HEIGHT && x >= 0 && x < FIELD_WIDTH && walkableMap[y] && walkableMap[y][x] === 1;
+  };
+
+  const isGoalkeeperBlocking = (newBallX, newBallY) => {
+    const goalkeeper = aiPlayers.find(player => player.role === 'goalkeeper');
+    return newBallY === goalkeeper.y && newBallX >= 20;
   };
 
   const moveGoalkeeper = useCallback(() => {
@@ -118,6 +124,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         }
       } else if (ball.possessedBy === null) {
         // Move towards the ball if it's null (after the first null)
+        if (hasShot) return; // Prevent moving if the player has just shot
         if (ball.x > player.x) {
           newX++;
           newDirection = 2; // Right
@@ -134,6 +141,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         }
       } else {
         setFirstNullHandled(false);
+        setHasShot(false); // Reset hasShot when ball is possessed by player 1 or 2
         if (ball.possessedBy !== null && ball.possessedBy < 3) {
           // Move towards the ball if possessed by player 1 or 2
           if (ball.x > player.x) {
@@ -159,8 +167,10 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
       // Check collision with ball
       if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1) {
-        setBall(ball => ({ ...ball, possessedBy: player.id }));
-        setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
+        if (Math.random() > 0.5) { // Add randomness for possession
+          setBall(ball => ({ ...ball, possessedBy: player.id }));
+          setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
+        }
       }
 
       // Update ball position if player has possession
@@ -168,9 +178,20 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         setBall(ball => ({ ...ball, x: newX, y: newY + 1 }));
 
         // Check if forward is in shooting range
-        if (newX < 7) {
+        if (newX <= 2) {
+          // Shoot the ball vertically
+          setBall(ball => ({
+            ...ball,
+            x: newX,
+            y: newY <= FIELD_HEIGHT / 2 ? Math.min(newY + 9, FIELD_HEIGHT - 1) : Math.max(newY - 9, 0),
+            possessedBy: null
+          }));
+          setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
+          setHasShot(true); // Set hasShot to true after shooting
+          setTimeout(() => setHasShot(false), 1000); // Reset hasShot after 1 second
+        } else if (newX <= 7) {
           // Shoot the ball 9 tiles to the left
-          if (newY <= 3) {
+          if (newY <= 2) {
             // Shoot diagonally downwards
             setBall(ball => ({ ...ball, x: Math.max(newX - 9, 0), y: Math.min(newY + 9, FIELD_HEIGHT - 1), possessedBy: null }));
           } else if (newY >= FIELD_HEIGHT - 3) {
@@ -180,10 +201,12 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
             setBall(ball => ({ ...ball, x: Math.max(newX - 9, 0), y: newY, possessedBy: null }));
           }
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
+          setHasShot(true); // Set hasShot to true after shooting
+          setTimeout(() => setHasShot(false), 1000); // Reset hasShot after 1 second
         }
       }
     }
-  }, [ball, player, setBall, firstNullHandled]);
+  }, [ball, player, setBall, firstNullHandled, hasShot]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -191,6 +214,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         // Reset to initial positions after goal is scored
         setPlayer({ id, x: initialX, y: initialY, direction: 0, hasBall: false, role });
         setFirstNullHandled(false);
+        setHasShot(false); // Reset hasShot when a goal is scored
       } else {
         if (player.role === 'goalkeeper') {
           moveGoalkeeper();
@@ -207,6 +231,8 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 };
 
 export default AIPlayer;
+
+
 
 
 
