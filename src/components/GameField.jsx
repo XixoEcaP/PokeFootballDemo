@@ -22,17 +22,17 @@ const walkableMap = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
+  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
 const GameField = ({ setScore, playerTeam, aiTeam }) => {
@@ -43,10 +43,10 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 
   const initialAIPositions = [
     { id: 3, type: aiTeam.goalkeeper.split('.')[0], x: 20, y: 7, direction: 0, hasBall: false, role: 'goalkeeper' },
-    { id: 4, type: aiTeam.forward.split('.')[0], x: 14, y: 12, direction: 1, hasBall: false, role: 'forward' }
+    { id: 4, type: aiTeam.forward.split('.')[0], x: 19, y: 12, direction: 1, hasBall: false, role: 'forward' }
   ];
 
-  const initialBallPosition = { x: 11, y: 7, direction: 0, possessedBy: null };
+  const initialBallPosition = { x: 11, y: 7, direction: 0, possessedBy: null, lastShot: false };
 
   const [players, setPlayers] = useState(initialPlayerPositions);
   const [aiPlayers, setAIPlayers] = useState(initialAIPositions);
@@ -61,7 +61,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   };
 
   const isWalkable = (x, y) => {
-    return walkableMap[y] && walkableMap[y][x] !== 0;
+    return walkableMap[y] && walkableMap[y][x] === 1;
   };
 
   const resetPositions = () => {
@@ -71,15 +71,16 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   };
 
   const checkGoal = useCallback(() => {
-    const { x, y } = ball;
+    const { x, y, lastShot } = ball;
     const tileValue = walkableMap[y][x];
 
-    if (!goalScored && (tileValue === 2 || tileValue === 3)) {
+
+    if (!goalScored &&  (tileValue === 2 )) {
       setGoalScored(true);
       if (tileValue === 2) {
         setScore(score => ({ ...score, team1: score.team1 + 1 }));
         console.log(`Goal for team 1!`);
-      } else {
+      } else if (tileValue === 3) {
         setScore(score => ({ ...score, team2: score.team2 + 1 }));
         console.log(`Goal for team 2!`);
       }
@@ -87,7 +88,26 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         resetPositions();
         setGoalScored(false);
       }, 1000); // Delay for 1 second before resetting positions
-    } 
+    }
+
+
+
+
+
+    if (!goalScored && lastShot && (tileValue === 3)) {
+      setGoalScored(true);
+      if (tileValue === 2) {
+        setScore(score => ({ ...score, team1: score.team1 + 1 }));
+        console.log(`Goal for team 1!`);
+      } else if (tileValue === 3) {
+        setScore(score => ({ ...score, team2: score.team2 + 1 }));
+        console.log(`Goal for team 2!`);
+      }
+      setTimeout(() => {
+        resetPositions();
+        setGoalScored(false);
+      }, 1000); // Delay for 1 second before resetting positions
+    }
   }, [ball, goalScored, resetPositions, setScore]);
 
   const updatePlayerPosition = useCallback((id, x, y, direction) => {
@@ -130,7 +150,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
     newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
 
-    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction }));
+    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   }, []);
 
   const checkCollision = useCallback((playerX, playerY, playerId) => {
@@ -149,7 +169,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     const otherPlayer = players.find(player => player.id !== activePlayerId);
 
     if (ball.possessedBy === activePlayer.id) {
-      setBall(ball => ({ ...ball, x: otherPlayer.x+1, y: otherPlayer.y + 1, possessedBy: otherPlayer.id }));
+      setBall(ball => ({ ...ball, x: otherPlayer.x + 1, y: otherPlayer.y + 1, possessedBy: otherPlayer.id, lastShot: false }));
       updatePlayerBallPossession(activePlayer.id, false);
       updatePlayerBallPossession(otherPlayer.id, true);
       setActivePlayerId(otherPlayer.id);
@@ -170,7 +190,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 
   const isGoalkeeperBlocking = (newBallX, newBallY) => {
     const { x: goalkeeperX, y: goalkeeperY } = goalkeeperPosition;
-    return newBallY === goalkeeperY && newBallX >= goalkeeperX;
+    return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1) && newBallX >= goalkeeperX;
   };
 
   const shootBallVertically = useCallback(() => {
@@ -195,11 +215,10 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     }
 
     if (isGoalkeeperBlocking(newBallX, newBallY)) {
-      if (Math.random() > 0) { 
       newBallX = 20; // Stop ball at x = 20 if goalkeeper is blocking
-    }}
+    }
 
-    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null }));
+    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
 
@@ -238,7 +257,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       newBallX = 20; // Stop ball at x = 20 if goalkeeper is blocking
     }
 
-    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null }));
+    setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
 
@@ -353,6 +372,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
           setAIPlayerPosition={updateAIPlayerPosition}
           walkableMap={walkableMap}
           goalScored={goalScored}
+          aiPlayers={aiPlayers}
+          updateGoalkeeperPosition={updateGoalkeeperPosition}
         />
       ))}
       <Ball x={ball.x} y={ball.y} direction={ball.direction} />
@@ -361,6 +382,9 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 };
 
 export default GameField;
+
+
+
 
 
 
