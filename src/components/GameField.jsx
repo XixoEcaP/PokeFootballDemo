@@ -22,13 +22,13 @@ const walkableMap = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
   [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
-  [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+  [4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -88,7 +88,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         setGoalScored(false);
       }, 1000); // Delay for 1 second before resetting positions
     }
-  
+  else{
     if (tileValue === 0) {
       // Logic for handling the ball going into tile 4
       console.log("Ball has gone into tile 4");
@@ -96,12 +96,36 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       // Move the ball to a new position
       setBall(ball => ({
         ...ball,
-        x: Math.max(x - 1, 0), // Example logic: move the ball one tile to the left
+     
         y: Math.max(y - 1, 0), // Example logic: move the ball one tile up
-        lastShot: false, // Reset lastShot as the ball is now in a new position
+        lastShot: true, // Reset lastShot as the ball is now in a new position
       }));
     }
+    if (tileValue === 4||tileValue === 2&&!goalScored) {
+      // Logic for handling the ball going into tile 4
+    
+      // Move the ball to a new position
+      setBall(ball => ({
+        ...ball,
+        x: Math.max(x + 1, 0), // Example logic: move the ball one tile to the left
+     
+        lastShot: true, // Reset lastShot as the ball is now in a new position
+      }));
+    }
+    if (tileValue === 5||tileValue === 3&&!goalScored) {
+      // Logic for handling the ball going into tile 4
+      console.log("Ball has gone into tile 4");
+  
+      // Move the ball to a new position
+      setBall(ball => ({
+        ...ball,
+        x: Math.max(x - 1, 0), // Example logic: move the ball one tile to the left
+     
+        lastShot: true, // Reset lastShot as the ball is now in a new position
+      }));
+    }}
   }, [ball, goalScored, resetPositions, setScore]);
+  
   
   
 
@@ -143,13 +167,14 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     }
 
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
-    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
+    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 2, newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   }, []);
 
   const checkCollision = useCallback((playerX, playerY, playerId) => {
     if (
+      playerId !== 4 && // Ensure player 4 does not possess the ball
       Math.abs(playerX - ball.x) <= 1 &&
       Math.abs(playerY - ball.y) <= 1
     ) {
@@ -158,7 +183,6 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       setActivePlayerId(playerId);
     }
   }, [ball.x, ball.y]);
-
   const passBall = useCallback(() => {
     const activePlayer = players.find(player => player.id === activePlayerId);
     const otherPlayer = players.find(player => player.id !== activePlayerId);
@@ -192,70 +216,72 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const shootBallVertically = useCallback(() => {
     let newBallX = ball.x;
     let newBallY = ball.y;
-
+    const randomDistance = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
+  
     switch (ball.direction) {
       case 0: // Down
-        newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + 7);
+        newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + randomDistance);
         break;
       case 1: // Left
-        newBallX = Math.max(0, ball.x - 7);
+        newBallX = Math.max(0, ball.x - randomDistance);
         break;
       case 2: // Right
-        newBallX = Math.min(FIELD_WIDTH - 1, ball.x + 7);
+        newBallX = Math.min(FIELD_WIDTH - 1, ball.x + randomDistance);
         break;
       case 3: // Up
-        newBallY = Math.max(0, ball.y - 7);
+        newBallY = Math.max(0, ball.y - randomDistance);
         break;
       default:
         break;
     }
-
+  
     if (isGoalkeeperBlocking(newBallX, newBallY)) {
       newBallX = 20; // Stop ball at x = 20 if goalkeeper is blocking
     }
-
+  
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
-
   const shootBallDiagonally = useCallback(() => {
     let newBallX = ball.x;
     let newBallY = ball.y;
     const fieldCenterY = Math.floor(FIELD_HEIGHT / 2);
-
+    const randomDistance = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
+  
     if (ball.y < fieldCenterY) { // Player is in the top half of the field
-      newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + 7); // Shoot downwards
+      newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + randomDistance); // Shoot downwards
       switch (ball.direction) {
         case 1: // Left
-          newBallX = Math.max(0, ball.x - 7); // Move left
+          newBallX = Math.max(0, ball.x - randomDistance); // Move left
           break;
         case 2: // Right
-          newBallX = Math.min(FIELD_WIDTH - 1, ball.x + 7); // Move right
+          newBallX = Math.min(FIELD_WIDTH - 1, ball.x + randomDistance); // Move right
           break;
         default:
           break;
       }
     } else { // Player is in the bottom half of the field
-      newBallY = Math.max(0, ball.y - 7); // Shoot upwards
+      newBallY = Math.max(0, ball.y - randomDistance); // Shoot upwards
       switch (ball.direction) {
         case 1: // Left
-          newBallX = Math.max(0, ball.x - 7); // Move left
+          newBallX = Math.max(0, ball.x - randomDistance); // Move left
           break;
         case 2: // Right
-          newBallX = Math.min(FIELD_WIDTH - 1, ball.x + 7); // Move right
+          newBallX = Math.min(FIELD_WIDTH - 1, ball.x + randomDistance); // Move right
           break;
         default:
           break;
       }
     }
-
+  
     if (isGoalkeeperBlocking(newBallX, newBallY)) {
       newBallX = 20; // Stop ball at x = 20 if goalkeeper is blocking
     }
-
+  
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
+  
 
   const changeControl = useCallback(() => {
     setActivePlayerId(activePlayerId === 1 ? 2 : 1);

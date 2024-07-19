@@ -128,7 +128,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
     }
 
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
-    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
+    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 2, newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   }, [setBall]);
@@ -199,7 +199,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
       setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY, direction: newDirection }));
   
       // Check collision with ball
-      if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && (Math.abs(newY - ball.y) <= 1|Math.abs(newY - ball.y) <= 2) && (ball.x === newX && ball.y === newY)) {
+      if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && (Math.abs(newY - ball.y) <= 1 || Math.abs(newY - ball.y) <= 2) && (ball.x === newX && ball.y === newY)) {
         if (Math.random() > 0.5) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
@@ -211,35 +211,37 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
       // Update ball position if player has possession
       if (player.hasBall) {
         setBallPositionInFrontOfPlayer(newX, newY, newDirection);
-        let targetX; 
-        let targetY;
-
+        var targetX; 
+        var targetY;
+        var randomDistance = Math.floor(Math.random() * 6) + 5; // Random number between 5 and 10
+  
         // Check if forward is in shooting range
         if (newX <= 7) {
-          if (newX === 1) {
-            targetX = Math.max(newX - 9, 0);
-            targetY = newY;
-          }
+       
           // Function to check if a player is blocking the ball's path
           const isBlockedByPlayer = (x, y) => {
             return players && players.some(p => (p.id === 1 || p.id === 2) && p.x === x && p.y === y);
           };
-          targetX = Math.max(newX - 9, 0);
+          targetX = Math.max(newX - randomDistance, 0);
           targetY = newY;
           if (newX === 0) {
-            targetX = Math.max(newX + 5, 0);
+            
+            targetX = Math.max(randomDistance-4, 0);
             targetY = 7;
           } else if (newX === 1) {
-            targetX = Math.max(newX - 9, 0);
-            targetY = newY;
-          } else if (newY <= 3) {
+            targetX = Math.max(newX - randomDistance, 0);
+            if (Math.random() > 0.5) {
+            targetY = newY+1;}else{
+              targetY = newY-1;
+            }
+          } else if (newY <= 2) {
             // Shoot diagonally downwards
-            targetX = Math.max(newX - 9, 0);
-            targetY = Math.min(newY + 9, FIELD_HEIGHT - 1);
+            targetX = Math.max(newX - randomDistance, 0);
+            targetY = Math.min(newY + randomDistance, FIELD_HEIGHT - 1);
           } else if (newY >= FIELD_HEIGHT - 3) {
             // Shoot diagonally upwards
-            targetX = Math.max(newX - 9, 0);
-            targetY = Math.max(newY - 9, 0);
+            targetX = Math.max(newX - randomDistance, 0);
+            targetY = Math.max(newY - randomDistance, 0);
           }
   
           // Check if the ball's path is blocked by player 1 or 2
@@ -254,35 +256,23 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
           setHasShot(true); // Set hasShot to true after shooting
           setTimeout(() => setHasShot(false), 2000); // Reset hasShot after 2 seconds
-        }
-        else{
-          targetX = Math.max(newX - 9, 0);
+        } else {
+          targetX = Math.max(newX - randomDistance, 0);
           targetY = newY;
         }
       } 
     } else {
       
- 
+      targetX = Math.max(newX - randomDistance, 0);
+      targetY = newY;
       
       console.log(`Player ${player.id} is in front of non-walkable tiles at (${newX}, ${newY})`);
-      const directions = [
-        { dx: 0, dy: -1, direction: 3 }, // Up
-        { dx: 0, dy: 1, direction: 0 },  // Down
-        { dx: -1, dy: 0, direction: 1 }, // Left
-        { dx: 1, dy: 0, direction: 2 }   // Right
-      ];
-  
-      for (const { dx, dy, direction } of directions) {
-        const altX = player.x + dx;
-        const altY = player.y + dy;
-        if (isWalkable(altX, altY)) {
-          setPlayer(prevPlayer => ({ ...prevPlayer, x: altX, y: altY, direction }));
-        
-    
-          break
-
-      // Add your logic here to handle the player being stuck, e.g., try moving in a different direction
-    }}}
+      const altX = player.x + 1;
+      const altY = player.y;
+      if (isWalkable(altX, altY)) {
+        setPlayer(prevPlayer => ({ ...prevPlayer, x: altX, y: altY, direction: 2 }));
+      }
+    }
   }, [ball, player, players, setBall, firstNullHandled, hasShot, setPlayer, setBallPositionInFrontOfPlayer, updatePlayerPosition]);
   
 
