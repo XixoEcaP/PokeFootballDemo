@@ -73,9 +73,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const checkGoal = useCallback(() => {
     const { x, y, lastShot } = ball;
     const tileValue = walkableMap[y][x];
-
-
-    if (!goalScored &&  (tileValue === 2 )) {
+  
+    if (!goalScored && lastShot && (tileValue === 2 || tileValue === 3)) {
       setGoalScored(true);
       if (tileValue === 2) {
         setScore(score => ({ ...score, team1: score.team1 + 1 }));
@@ -89,26 +88,22 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         setGoalScored(false);
       }, 1000); // Delay for 1 second before resetting positions
     }
-
-
-
-
-
-    if (!goalScored && lastShot && (tileValue === 3)) {
-      setGoalScored(true);
-      if (tileValue === 2) {
-        setScore(score => ({ ...score, team1: score.team1 + 1 }));
-        console.log(`Goal for team 1!`);
-      } else if (tileValue === 3) {
-        setScore(score => ({ ...score, team2: score.team2 + 1 }));
-        console.log(`Goal for team 2!`);
-      }
-      setTimeout(() => {
-        resetPositions();
-        setGoalScored(false);
-      }, 1000); // Delay for 1 second before resetting positions
+  
+    if (tileValue === 0) {
+      // Logic for handling the ball going into tile 4
+      console.log("Ball has gone into tile 4");
+  
+      // Move the ball to a new position
+      setBall(ball => ({
+        ...ball,
+        x: Math.max(x - 1, 0), // Example logic: move the ball one tile to the left
+        y: Math.max(y - 1, 0), // Example logic: move the ball one tile up
+        lastShot: false, // Reset lastShot as the ball is now in a new position
+      }));
     }
   }, [ball, goalScored, resetPositions, setScore]);
+  
+  
 
   const updatePlayerPosition = useCallback((id, x, y, direction) => {
     if (!isWalkable(x, y)) return;
@@ -189,6 +184,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   }, []);
 
   const isGoalkeeperBlocking = (newBallX, newBallY) => {
+    
     const { x: goalkeeperX, y: goalkeeperY } = goalkeeperPosition;
     return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1) && newBallX >= goalkeeperX;
   };
@@ -374,6 +370,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
           goalScored={goalScored}
           aiPlayers={aiPlayers}
           updateGoalkeeperPosition={updateGoalkeeperPosition}
+          updatePlayerPosition={updatePlayerPosition} 
+          players={players}
         />
       ))}
       <Ball x={ball.x} y={ball.y} direction={ball.direction} />
@@ -382,6 +380,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 };
 
 export default GameField;
+
 
 
 
