@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Player from './Player';
-import AIPlayer from './AIPlayer';
+import AIPlayer from './AIPlayer'; // Import AIPlayer component
 import Ball from './Ball';
 import field from '../assets/field.png';
 
@@ -89,7 +89,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         setGoalScored(false);
       }, 1000); // Delay for 1 second before resetting positions
     } else {
-      if (tileValue === 0) {
+      if (tileValue === 18) {
         // Logic for handling the ball going into tile 4
         console.log("Ball has gone into tile 4");
   
@@ -97,7 +97,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         setBall(ball => ({
           ...ball,
           y: Math.max(y - 1, 0), // Example logic: move the ball one tile up
-          lastShot: true, // Reset lastShot as the ball is now in a new position
+          lastShot: false, // Reset lastShot as the ball is now in a new position
         }));
       }
       if ((tileValue === 4 || tileValue === 2) && !goalScored) {
@@ -161,7 +161,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         break;
     }
 
-    newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
+    newBallX = Math.max(1, Math.min(FIELD_WIDTH - 2, newBallX));
     newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 2, newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
@@ -204,6 +204,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   }, []);
 
   const isGoalkeeperBlocking = (newBallX, newBallY) => {
+
     const { x: goalkeeperX, y: goalkeeperY } = goalkeeperPosition;
     return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1) && newBallX >= goalkeeperX;
   };
@@ -211,7 +212,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const shootBallVertically = useCallback(() => {
     let newBallX = ball.x;
     let newBallY = ball.y;
-    const randomDistance = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
+    const randomDistance = Math.floor(Math.random() * 8) + 5; // Random number between 5 and 12
   
     switch (ball.direction) {
       case 0: // Down
@@ -313,9 +314,10 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         passBall();
         return;
       case 's': // Shoot vertically
-        if (ball.possessedBy !== null) {
+        if (ball.possessedBy !== null&& ball.possessedBy !== 3 && ball.possessedBy !== 4) {
           shootBallVertically();
         }
+        console.log(ball.possessedBy)
         return;
       case 'q': // Shoot diagonally
         if (ball.possessedBy !== null && ball.possessedBy !== 3 && ball.possessedBy !== 4) {
@@ -395,8 +397,9 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
           goalScored={goalScored}
           aiPlayers={aiPlayers}
           updateGoalkeeperPosition={updateGoalkeeperPosition}
-          updatePlayerPosition={updatePlayerPosition} 
+          updatePlayerPosition={updatePlayerPosition}
           players={players}
+          setActivePlayerId={setActivePlayerId}
         />
       ))}
       <Ball x={ball.x} y={ball.y} direction={ball.direction} />
@@ -405,6 +408,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 };
 
 export default GameField;
+
 
 
 

@@ -8,6 +8,8 @@ const Site = () => {
   const [playerTeam, setPlayerTeam] = useState(null);
   const [aiTeam, setAITeam] = useState(null);
   const [pressedKey, setPressedKey] = useState(null);
+  const [playerTeamName, setPlayerTeamName] = useState('');
+  const [aiTeamName, setAITeamName] = useState('');
 
   const handleKeyPress = (key) => {
     const event = new KeyboardEvent('keydown', { key });
@@ -45,8 +47,8 @@ const Site = () => {
       {playerTeam && aiTeam ? (
         <>
           <div className="scoreboard">
-            <p className="score">Team 1: {score.team1}</p>
-            <p className="score">Team 2: {score.team2}</p>
+            <p className="score">{playerTeamName} Team: {score.team2}</p>
+            <p className="score">{aiTeamName} Team: {score.team1}</p>
           </div>
           <GameField setScore={setScore} playerTeam={playerTeam} aiTeam={aiTeam} />
           <ul className="instructions">
@@ -121,7 +123,12 @@ const Site = () => {
           </div>
         </>
       ) : (
-        <TeamSelectionMenu setPlayerTeam={setPlayerTeam} setAITeam={setAITeam} />
+        <TeamSelectionMenu 
+          setPlayerTeam={setPlayerTeam} 
+          setAITeam={setAITeam} 
+          setPlayerTeamName={setPlayerTeamName}
+          setAITeamName={setAITeamName} 
+        />
       )}
     </div>
   );

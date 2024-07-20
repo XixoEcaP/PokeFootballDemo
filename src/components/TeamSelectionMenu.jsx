@@ -18,13 +18,15 @@ const teams = {
   Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
 };
 
-const TeamSelectionMenu = ({ setPlayerTeam, setAITeam }) => {
+const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAITeamName }) => {
   const [playerTeam, setPlayerTeamLocal] = useState('Poison');
   const [aiTeam, setAITeamLocal] = useState('Fire');
 
   const handleStartGame = () => {
     setPlayerTeam(teams[playerTeam]);
     setAITeam(teams[aiTeam]);
+    setPlayerTeamName(playerTeam);
+    setAITeamName(aiTeam);
   };
 
   return (
@@ -52,6 +54,7 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam }) => {
 };
 
 export default TeamSelectionMenu;
+
 
 
 
