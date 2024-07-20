@@ -277,7 +277,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
             targetY = 7;
           } else if (newX === 1) {
             targetX = Math.max(newX - randomDistance, 0);
-            if (Math.random() > 0.5) {
+            if (targetY < 7) {
             targetY = newY+1;}else{
               targetY = newY-1;
             }
