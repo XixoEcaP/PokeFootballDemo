@@ -20,7 +20,7 @@ body {
   overflow: hidden; /* Prevent scrolling */
 }
 
-html, body {
+body {
   height: 100%;
   width: 100%;
 }
@@ -139,8 +139,8 @@ html, body {
 
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
-  html, body {
-    padding-top: 25px;
+  body {
+    padding-top: 0;
     height: 120%;
     width: 100%;
     overflow: hidden;
