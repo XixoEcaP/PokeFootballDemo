@@ -1,18 +1,19 @@
 {
   "files": {
-    "main.css": "/PokeFootballDemo/static/css/main.8cadc335.css",
-    "main.js": "/PokeFootballDemo/static/js/main.2e643a30.js",
+    "main.css": "/PokeFootballDemo/static/css/main.77ad9ced.css",
+    "main.js": "/PokeFootballDemo/static/js/main.ae58c624.js",
     "static/js/453.d4dbb52b.chunk.js": "/PokeFootballDemo/static/js/453.d4dbb52b.chunk.js",
     "static/media/goal.png": "/PokeFootballDemo/static/media/goal.659d4845dbbc3c134d12.png",
     "static/media/field.png": "/PokeFootballDemo/static/media/field.29f46fc9ba6cae0a9c98.png",
+    "static/media/Pokemon Solid.ttf": "/PokeFootballDemo/static/media/Pokemon Solid.5d60be1f7ff5fcc21fc1.ttf",
     "static/media/onix.png": "/PokeFootballDemo/static/media/onix.677362e36f880353ac48.png",
     "index.html": "/PokeFootballDemo/index.html",
-    "main.8cadc335.css.map": "/PokeFootballDemo/static/css/main.8cadc335.css.map",
-    "main.2e643a30.js.map": "/PokeFootballDemo/static/js/main.2e643a30.js.map",
+    "main.77ad9ced.css.map": "/PokeFootballDemo/static/css/main.77ad9ced.css.map",
+    "main.ae58c624.js.map": "/PokeFootballDemo/static/js/main.ae58c624.js.map",
     "453.d4dbb52b.chunk.js.map": "/PokeFootballDemo/static/js/453.d4dbb52b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8cadc335.css",
-    "static/js/main.2e643a30.js"
+    "static/css/main.77ad9ced.css",
+    "static/js/main.ae58c624.js"
   ]
 }
