@@ -120,13 +120,14 @@ html, body {
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
   html, body {
+    padding-top: 10px;
     height: 120%;
     width: 100%;
     overflow: hidden;
   }
 
   .container {
-    padding: 20px; /* Remove padding to eliminate blank space */
+  
     justify-content: flex-start; /* Align content to the top to remove blank space */
     transform: scale(0.45); /* Scale down the content */
     transform-origin: top; /* Align content to the top */
@@ -145,8 +146,9 @@ html, body {
     display: flex; /* Show controls on mobile */
     flex-direction: row;
     justify-content: space-around;
-    width: 300%;
-    margin-left: -45px;
+    width: 280%;
+    margin-left: -20px;
+    transform: scale(0.95);
   }
 
   .directional-buttons {
