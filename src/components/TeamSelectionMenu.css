@@ -67,8 +67,8 @@
 @media only screen and (max-width: 600px) {
     .container2 {
    
-        padding-top: 50%;
-      transform: scale(1.5);
+        
+      transform: scale(0.5);
     }
   
     

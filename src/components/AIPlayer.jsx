@@ -131,7 +131,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
       setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
     }
 
-    if (player.hasBall) {
+    if (player.hasBall&&ball.possessedBy !== 1 && ball.possessedBy !== 2& ball.possessedBy !== null) {
       // Shoot the ball diagonally if near top or bottom
       if (newY <= 2) {
         // Shoot diagonally downwards
@@ -263,7 +263,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
         // Update ball position if player has possession
         if (player.hasBall) {
-            if (ball.possessedBy !== 1 && ball.possessedBy !== 2) {
+            if (ball.possessedBy !== 1 && ball.possessedBy !== 2& ball.possessedBy !== null) {
                 setBallPositionInFrontOfPlayer(newX, newY, newDirection);
             }
             var targetX; 
@@ -271,7 +271,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 var randomDistance = Math.floor(Math.random() * 8) + 5; // Random number between 5 and 12
 
             // Check if forward is in shooting range
-            if (newX <= 7 && (ball.possessedBy !== 1 && ball.possessedBy !== 2)) {
+            if (newX <= 7 && (ball.possessedBy !== 1 && ball.possessedBy !== 2&&ball.possessedBy !== null)) {
                 // Function to check if a player is blocking the ball's path
                 const isBlockedByPlayer = (x, y) => {
                     return players && players.some(p => (p.id === 1 || p.id === 2) && p.x === x && (p.y === y || p.y + 1 === y));
