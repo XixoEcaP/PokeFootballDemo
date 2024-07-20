@@ -26,24 +26,6 @@ const Site = () => {
   };
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      setPressedKey(event.key);
-    };
-
-    const handleKeyUp = (event) => {
-      setPressedKey(null);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  useEffect(() => {
     // Simulate loading delay (e.g., fetching data or images)
     const timer = setTimeout(() => {
       setLoading(false);
@@ -150,6 +132,7 @@ const Site = () => {
 };
 
 export default Site;
+
 
 
 

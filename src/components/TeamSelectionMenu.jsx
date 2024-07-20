@@ -15,7 +15,7 @@ const teams = {
   Psichic: { forward: 'alakazam.png', goalkeeper: 'mrmime.png' },
   Ice: { forward: 'jynx.png', goalkeeper: 'lapras.png' },
   Flying: { forward: 'dodrio.png', goalkeeper: 'aerodactyl.png' },
-  Dragon: { forward: 'dragonite..png', goalkeeper: 'dragonair.png' },
+  Dragon: { forward: 'dragonite.png', goalkeeper: 'dragonair.png' },
   Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
 };
 
@@ -26,8 +26,8 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
   const handleStartGame = () => {
     setPlayerTeam(teams[playerTeam]);
     setAITeam(teams[aiTeam]);
-    setPlayerTeamName(playerTeam + ' Team');
-    setAITeamName(aiTeam + ' Team');
+    setPlayerTeamName(`${playerTeam} Team`);
+    setAITeamName(`${aiTeam} Team`);
   };
 
   return (
@@ -55,7 +55,6 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
 };
 
 export default TeamSelectionMenu;
-
 
 
 
