@@ -247,7 +247,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
   
       // Check collision with ball
       if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && (Math.abs(newY - ball.y) <= 1 || Math.abs(newY - ball.y) <= 2) && (ball.x === newX && ball.y === newY)) {
-        if (Math.random() > 0.5) { // Add randomness for possession
+        if (Math.random() > 0.75) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
         } else {
