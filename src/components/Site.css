@@ -107,7 +107,7 @@ html, body {
 }
 
 /* Media queries for mobile devices */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   html, body {
     height: 100%;
     width: 100%;
@@ -117,7 +117,7 @@ html, body {
   .container {
     padding: 20px; /* Remove padding to eliminate blank space */
     justify-content: flex-start; /* Align content to the top to remove blank space */
-    transform: scale(0.5); /* Scale down the content */
+    transform: scale(0.45); /* Scale down the content */
     transform-origin: top; /* Align content to the top */
   }
 

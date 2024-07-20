@@ -1,20 +1,43 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Player from './Player';
-import AIPlayer from './AIPlayer'; // Import AIPlayer component
+import AIPlayer from './AIPlayer';
 import Ball from './Ball';
 import field from '../assets/field.png';
+import goal from '../assets/goal.png';
 
 const TILE_SIZE = 32;
 const FIELD_WIDTH = 22;
 const FIELD_HEIGHT = 15;
 
-const Field = styled.div`
+// Define the size of the larger container
+const CONTAINER_WIDTH = (FIELD_WIDTH + 4) * TILE_SIZE;
+const CONTAINER_HEIGHT = (FIELD_HEIGHT + 4) * TILE_SIZE;
+
+const Container = styled.div`
   background-image: url(${field});
   background-size: cover;
+  width: ${CONTAINER_WIDTH}px;
+  height: ${CONTAINER_HEIGHT}px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Field = styled.div`
   width: ${FIELD_WIDTH * TILE_SIZE}px;
   height: ${FIELD_HEIGHT * TILE_SIZE}px;
   position: relative;
+`;
+
+const GoalOverlay = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: ${props => (props.show ? 'block' : 'none')};
+  z-index: 1;
 `;
 
 const walkableMap = [
@@ -53,6 +76,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const [ball, setBall] = useState(initialBallPosition);
   const [activePlayerId, setActivePlayerId] = useState(1);
   const [goalScored, setGoalScored] = useState(false);
+  const [goalOverlayVisible, setGoalOverlayVisible] = useState(false); // Add this state
   const [goalkeeperPosition, setGoalkeeperPosition] = useState({ x: 20, y: 7 });
   const [movementInterval, setMovementInterval] = useState(null);
   const [frameIndex, setFrameIndex] = useState(0);
@@ -77,6 +101,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   
     if (!goalScored && lastShot && (tileValue === 2 || tileValue === 3)) {
       setGoalScored(true);
+      setGoalOverlayVisible(true); // Show the goal overlay
       if (tileValue === 2) {
         setScore(score => ({ ...score, team1: score.team1 + 1 }));
         console.log(`Goal for team 1!`);
@@ -87,6 +112,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       setTimeout(() => {
         resetPositions();
         setGoalScored(false);
+        setGoalOverlayVisible(false); // Hide the goal overlay after the timeout
       }, 1000); // Delay for 1 second before resetting positions
     } else {
       if (tileValue === 18) {
@@ -243,7 +269,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     let newBallX = ball.x;
     let newBallY = ball.y;
     const fieldCenterY = Math.floor(FIELD_HEIGHT / 2);
-    const randomDistance = Math.floor(Math.random() * 6) + 4; // Random number between 4 and 9
+    const randomDistance = Math.floor(Math.random() * 8) + 5; // Random number between 5 and 12
   
     if (ball.y < fieldCenterY) { // Player is in the top half of the field
       newBallY = Math.min(FIELD_HEIGHT - 1, ball.y + randomDistance); // Shoot downwards
@@ -378,32 +404,35 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   }, [checkGoal]);
 
   return (
-    <Field className="game-field">
-      {players.map(player => (
-        <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} frameIndex={frameIndex} hasBall={player.hasBall} />
-      ))}
-      {aiPlayers.map(player => (
-        <AIPlayer
-          key={player.id}
-          id={player.id}
-          type={player.type}
-          initialX={player.x}
-          initialY={player.y}
-          role={player.role}
-          ball={ball}
-          setBall={setBall}
-          setAIPlayerPosition={updateAIPlayerPosition}
-          walkableMap={walkableMap}
-          goalScored={goalScored}
-          aiPlayers={aiPlayers}
-          updateGoalkeeperPosition={updateGoalkeeperPosition}
-          updatePlayerPosition={updatePlayerPosition}
-          players={players}
-          setActivePlayerId={setActivePlayerId}
-        />
-      ))}
-      <Ball x={ball.x} y={ball.y} direction={ball.direction} />
-    </Field>
+    <Container className="game-container">
+      <Field className="game-field">
+        <GoalOverlay src={goal} show={goalOverlayVisible} />
+        {players.map(player => (
+          <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} frameIndex={frameIndex} hasBall={player.hasBall} />
+        ))}
+        {aiPlayers.map(player => (
+          <AIPlayer
+            key={player.id}
+            id={player.id}
+            type={player.type}
+            initialX={player.x}
+            initialY={player.y}
+            role={player.role}
+            ball={ball}
+            setBall={setBall}
+            setAIPlayerPosition={updateAIPlayerPosition}
+            walkableMap={walkableMap}
+            goalScored={goalScored}
+            aiPlayers={aiPlayers}
+            updateGoalkeeperPosition={updateGoalkeeperPosition}
+            updatePlayerPosition={updatePlayerPosition}
+            players={players}
+            setActivePlayerId={setActivePlayerId}
+          />
+        ))}
+        <Ball x={ball.x} y={ball.y} direction={ball.direction} />
+      </Field>
+    </Container>
   );
 };
 

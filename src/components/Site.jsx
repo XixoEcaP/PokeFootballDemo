@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import GameField from './GameField';
 import TeamSelectionMenu from './TeamSelectionMenu';
+import Loader from './Loader';
 import './Site.css';
 
 const Site = () => {
@@ -10,6 +11,7 @@ const Site = () => {
   const [pressedKey, setPressedKey] = useState(null);
   const [playerTeamName, setPlayerTeamName] = useState('');
   const [aiTeamName, setAITeamName] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const handleKeyPress = (key) => {
     const event = new KeyboardEvent('keydown', { key });
@@ -40,6 +42,19 @@ const Site = () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
+
+  useEffect(() => {
+    // Simulate loading delay (e.g., fetching data or images)
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // Adjust the timeout as needed
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="container">
@@ -135,6 +150,7 @@ const Site = () => {
 };
 
 export default Site;
+
 
 
 
