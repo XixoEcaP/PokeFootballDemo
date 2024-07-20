@@ -1,0 +1,75 @@
+.container2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: 'PokemonSolid', sans-serif;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .title {
+
+    padding: 2%;
+    font-size: 2em;
+    margin: 200px;
+  }
+  
+  .selection-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  .select {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 2px solid #333;
+    margin-bottom: 20px;
+  }
+  
+  .button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    background-color: #2a75bb;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #3c5aa6;
+  }
+  @media only screen and (max-width: 600px) {
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+  
+    .container {
+      padding: 20px; /* Remove padding to eliminate blank space */
+      justify-content: flex-start; /* Align content to the top to remove blank space */
+      transform: scale(1.8); /* Scale down the content */
+      transform-origin: top; /* Align content to the top */
+    }
+}
+@media only screen and (max-width: 600px) {
+    .container2 {
+   
+        padding-top: 50%;
+      transform: scale(1.5);
+    }
+  
+    
+  }

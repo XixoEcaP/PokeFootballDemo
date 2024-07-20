@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './TeamSelectionMenu.css';
 
 const teams = {
   Poison: { forward: 'gengar.png', goalkeeper: 'nidoking.png' },
@@ -25,35 +26,38 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
   const handleStartGame = () => {
     setPlayerTeam(teams[playerTeam]);
     setAITeam(teams[aiTeam]);
-    setPlayerTeamName(playerTeam);
-    setAITeamName(aiTeam);
+    setPlayerTeamName(playerTeam + ' Team');
+    setAITeamName(aiTeam + ' Team');
   };
 
   return (
-    <div className="team-selection-menu">
-      <h2>Select Teams</h2>
-      <div>
-        <label>Player Team: </label>
-        <select value={playerTeam} onChange={(e) => setPlayerTeamLocal(e.target.value)}>
+    <div className="container2">
+      <h2 className="title">Select Teams</h2>
+      <div className="selection-wrapper">
+        <label className="label">Player Team:</label>
+        <select className="select" value={playerTeam} onChange={(e) => setPlayerTeamLocal(e.target.value)}>
           {Object.keys(teams).map(team => (
             <option key={team} value={team}>{team}</option>
           ))}
         </select>
       </div>
-      <div>
-        <label>Rival Team: </label>
-        <select value={aiTeam} onChange={(e) => setAITeamLocal(e.target.value)}>
+      <div className="selection-wrapper">
+        <label className="label">Rival Team:</label>
+        <select className="select" value={aiTeam} onChange={(e) => setAITeamLocal(e.target.value)}>
           {Object.keys(teams).map(team => (
             <option key={team} value={team}>{team}</option>
           ))}
         </select>
       </div>
-      <button onClick={handleStartGame}>Start Game</button>
+      <button className="button" onClick={handleStartGame}>Start Game</button>
     </div>
   );
 };
 
 export default TeamSelectionMenu;
+
+
+
 
 
 
