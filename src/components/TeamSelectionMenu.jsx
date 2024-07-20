@@ -10,6 +10,7 @@ const teams = {
   Bug: { forward: 'scyther.png', goalkeeper: 'butterfree.png' },
   Rock: { forward: 'onix.png', goalkeeper: 'golem.png' },
   Ground: { forward: 'marowak.png', goalkeeper: 'sandslash.png' },
+  Psichic: { forward: 'alakazam.png', goalkeeper: 'mrmime.png' },
   Ice: { forward: 'lapras.png', goalkeeper: 'jynx.png' },
   Flying: { forward: 'dragonite.png', goalkeeper: 'aerodactyl.png' },
   Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
