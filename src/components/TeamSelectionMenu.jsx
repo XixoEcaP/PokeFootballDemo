@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 
 const teams = {
-  Fire: { forward: 'arcanine.png', goalkeeper: 'charizard.png' },
-  Grass: { forward: 'bulbasaur.png', goalkeeper: 'vileplume.png' },
   Poison: { forward: 'gengar.png', goalkeeper: 'nidoking.png' },
-  Thunder: { forward: 'pikachu.png', goalkeeper: 'jolteon.png' },
-  Water: { forward: 'psyduck.png', goalkeeper: 'blastoise.png' }
+  Fire: { forward: 'arcanine.png', goalkeeper: 'charizard.png' },
+  Grass: { forward: 'venusaur.png', goalkeeper: 'exeggutor.png' },
+  Water: { forward: 'blastoise.png', goalkeeper: 'slowbro.png' },
+  Normal: { forward: 'tauros.png', goalkeeper: 'snorlax.png' },
+  Thunder: { forward: 'jolteon.png', goalkeeper: 'pikachu.png' },
+  Bug: { forward: 'scyther.png', goalkeeper: 'butterfree.png' },
+  Rock: { forward: 'onix.png', goalkeeper: 'golem.png' },
+  Ground: { forward: 'marowak.png', goalkeeper: 'sandslash.png' },
+  Ice: { forward: 'lapras.png', goalkeeper: 'jynx.png' },
+  Flying: { forward: 'dragonite.png', goalkeeper: 'aerodactyl.png' },
+  Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
 };
 
 const TeamSelectionMenu = ({ setPlayerTeam, setAITeam }) => {

@@ -1,15 +1,37 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Player from './Player';
-import pikachu from '../assets/pikachu.png';
-import charizard from '../assets/charizard.png';
-import blastoise from '../assets/blastoise.png';
-import arcanine from '../assets/arcanine.png';
-import bulbasaur from '../assets/bulbasaur.png';
-import vileplume from '../assets/vileplume.png';
 import gengar from '../assets/gengar.png';
 import nidoking from '../assets/nidoking.png';
+import pikachu from '../assets/pikachu.png';
+import charizard from '../assets/charizard.png';
+import arcanine from '../assets/arcanine.png';
+import blastoise from '../assets/blastoise.png';
+import bulbasaur from '../assets/bulbasaur.png';
+import vileplume from '../assets/vileplume.png';
 import psyduck from '../assets/psyduck.png';
 import jolteon from '../assets/jolteon.png';
+import exeggutor from '../assets/exeggutor.png';
+import wartortle from '../assets/wartortle.png';
+import slowbro from '../assets/slowbro.png';
+import aerodactyl from '../assets/aerodactyl.png';
+import alakazam from '../assets/alakazam.png';
+import butterfree from '../assets/butterfree.png';
+import dragonite from '../assets/dragonite.png';
+import golem from '../assets/golem.png';
+import onix from '../assets/onix.png';
+import houndoom from '../assets/houndoom.png';
+import jynx from '../assets/jynx.png';
+import lapras from '../assets/lapras.png';
+import machamp from '../assets/machamp.png';
+import marowak from '../assets/marowak.png';
+import sandslash from '../assets/sandslash.png';
+import mrmime from '../assets/mrmime.png';
+import primeape from '../assets/primeape.png';
+import scyther from '../assets/scyther.png';
+import snorlax from '../assets/snorlax.png';
+import tauros from '../assets/tauros.png';
+import tyranitar from '../assets/tyranitar.png';
+import venusaur from '../assets/venusaur.png';
 
 const FIELD_WIDTH = 22;
 const FIELD_HEIGHT = 15;
@@ -25,7 +47,29 @@ const getSprite = (type) => {
     case 'gengar': return gengar;
     case 'nidoking': return nidoking;
     case 'psyduck': return psyduck;
+    case 'wartortle': return wartortle;
     case 'jolteon': return jolteon;
+    case 'slowbro': return slowbro;
+    case 'exeggutor': return exeggutor;
+    case 'aerodactyl': return aerodactyl;
+    case 'alakazam': return alakazam;
+    case 'butterfree': return butterfree;
+    case 'dragonite': return dragonite;
+    case 'golem': return golem;
+    case 'onix': return onix;
+    case 'houndoom': return houndoom;
+    case 'jynx': return jynx;
+    case 'lapras': return lapras;
+    case 'machamp': return machamp;
+    case 'marowak': return marowak;
+    case 'sandslash': return sandslash;
+    case 'mrmime': return mrmime;
+    case 'primeape': return primeape;
+    case 'scyther': return scyther;
+    case 'snorlax': return snorlax;
+    case 'tauros': return tauros;
+    case 'tyranitar': return tyranitar;
+    case 'venusaur': return venusaur;
     default: return gengar; // Default to gengar if type is not recognized
   }
 };
@@ -44,6 +88,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
   const [firstNullHandled, setFirstNullHandled] = useState(false);
   const [hasShot, setHasShot] = useState(false);
+  const [frameIndex, setFrameIndex] = useState(0);
 
   const isWalkable = (x, y) => {
     return y >= 0 && y < FIELD_HEIGHT && x >= 0 && x < FIELD_WIDTH && walkableMap[y] && walkableMap[y][x] === 1;
@@ -70,6 +115,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
     if (isWalkable(newX, newY)) {
       setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY }));
+      setFrameIndex((prevIndex) => (prevIndex + 1) % 4); // Update frame index for animation
     }
 
     // Check collision with ball
@@ -197,6 +243,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
   
     if (isWalkable(newX, newY)) {
       setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY, direction: newDirection }));
+      setFrameIndex((prevIndex) => (prevIndex + 1) % 4); // Update frame index for animation
   
       // Check collision with ball
       if (!player.hasBall && Math.abs(newX - ball.x) <= 1 && (Math.abs(newY - ball.y) <= 1 || Math.abs(newY - ball.y) <= 2) && (ball.x === newX && ball.y === newY)) {
@@ -271,6 +318,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
       const altY = player.y;
       if (isWalkable(altX, altY)) {
         setPlayer(prevPlayer => ({ ...prevPlayer, x: altX, y: altY, direction: 2 }));
+        setFrameIndex((prevIndex) => (prevIndex + 1) % 4); // Update frame index for animation
       }
     }
   }, [ball, player, players, setBall, firstNullHandled, hasShot, setPlayer, setBallPositionInFrontOfPlayer, updatePlayerPosition]);
@@ -296,10 +344,12 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
     return () => clearInterval(intervalId);
   }, [goalScored, moveGoalkeeper, moveForward, player.role, initialX, initialY]);
 
-  return <Player type={type} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} sprite={sprite} />;
+  return <Player type={type} x={player.x} y={player.y} direction={player.direction} frameIndex={frameIndex} hasBall={player.hasBall} sprite={sprite} />;
 };
 
 export default AIPlayer;
+
+
 
 
 

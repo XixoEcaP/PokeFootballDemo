@@ -55,6 +55,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const [goalScored, setGoalScored] = useState(false);
   const [goalkeeperPosition, setGoalkeeperPosition] = useState({ x: 20, y: 7 });
   const [movementInterval, setMovementInterval] = useState(null);
+  const [frameIndex, setFrameIndex] = useState(0);
 
   const updateGoalkeeperPosition = (position) => {
     setGoalkeeperPosition(position);
@@ -87,47 +88,41 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         resetPositions();
         setGoalScored(false);
       }, 1000); // Delay for 1 second before resetting positions
-    }
-  else{
-    if (tileValue === 0) {
-      // Logic for handling the ball going into tile 4
-      console.log("Ball has gone into tile 4");
+    } else {
+      if (tileValue === 0) {
+        // Logic for handling the ball going into tile 4
+        console.log("Ball has gone into tile 4");
   
-      // Move the ball to a new position
-      setBall(ball => ({
-        ...ball,
-     
-        y: Math.max(y - 1, 0), // Example logic: move the ball one tile up
-        lastShot: true, // Reset lastShot as the ball is now in a new position
-      }));
-    }
-    if (tileValue === 4||tileValue === 2&&!goalScored) {
-      // Logic for handling the ball going into tile 4
+        // Move the ball to a new position
+        setBall(ball => ({
+          ...ball,
+          y: Math.max(y - 1, 0), // Example logic: move the ball one tile up
+          lastShot: true, // Reset lastShot as the ball is now in a new position
+        }));
+      }
+      if ((tileValue === 4 || tileValue === 2) && !goalScored) {
+        // Logic for handling the ball going into tile 4
     
-      // Move the ball to a new position
-      setBall(ball => ({
-        ...ball,
-        x: Math.max(x + 1, 0), // Example logic: move the ball one tile to the left
-     
-        lastShot: true, // Reset lastShot as the ball is now in a new position
-      }));
+        // Move the ball to a new position
+        setBall(ball => ({
+          ...ball,
+          x: Math.max(x + 1, 0), // Example logic: move the ball one tile to the left
+          lastShot: true, // Reset lastShot as the ball is now in a new position
+        }));
+      }
+      if ((tileValue === 5 || tileValue === 3) && !goalScored) {
+        // Logic for handling the ball going into tile 4
+        console.log("Ball has gone into tile 4");
+  
+        // Move the ball to a new position
+        setBall(ball => ({
+          ...ball,
+          x: Math.max(x - 1, 0), // Example logic: move the ball one tile to the left
+          lastShot: true, // Reset lastShot as the ball is now in a new position
+        }));
+      }
     }
-    if (tileValue === 5||tileValue === 3&&!goalScored) {
-      // Logic for handling the ball going into tile 4
-      console.log("Ball has gone into tile 4");
-  
-      // Move the ball to a new position
-      setBall(ball => ({
-        ...ball,
-        x: Math.max(x - 1, 0), // Example logic: move the ball one tile to the left
-     
-        lastShot: true, // Reset lastShot as the ball is now in a new position
-      }));
-    }}
   }, [ball, goalScored, resetPositions, setScore]);
-  
-  
-  
 
   const updatePlayerPosition = useCallback((id, x, y, direction) => {
     if (!isWalkable(x, y)) return;
@@ -183,6 +178,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       setActivePlayerId(playerId);
     }
   }, [ball.x, ball.y]);
+
   const passBall = useCallback(() => {
     const activePlayer = players.find(player => player.id === activePlayerId);
     const otherPlayer = players.find(player => player.id !== activePlayerId);
@@ -208,7 +204,6 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   }, []);
 
   const isGoalkeeperBlocking = (newBallX, newBallY) => {
-    
     const { x: goalkeeperX, y: goalkeeperY } = goalkeeperPosition;
     return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1) && newBallX >= goalkeeperX;
   };
@@ -242,6 +237,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
+
   const shootBallDiagonally = useCallback(() => {
     let newBallX = ball.x;
     let newBallY = ball.y;
@@ -281,7 +277,6 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, possessedBy: null, lastShot: true }));
     updatePlayerBallPossession(activePlayerId, false);
   }, [ball.direction, ball.x, ball.y, activePlayerId, goalkeeperPosition]);
-  
 
   const changeControl = useCallback(() => {
     setActivePlayerId(activePlayerId === 1 ? 2 : 1);
@@ -292,23 +287,27 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     let newX = activePlayer.x;
     let newY = activePlayer.y;
     let newDirection = activePlayer.direction;
-
+  
     switch (e.key) {
       case 'ArrowUp':
         newY = Math.max(0, activePlayer.y - 1);
         newDirection = 3;
+        setFrameIndex((prevIndex) => (prevIndex + 1) % 4);
         break;
       case 'ArrowDown':
         newY = Math.min(FIELD_HEIGHT - 1, activePlayer.y + 1);
         newDirection = 0;
+        setFrameIndex((prevIndex) => (prevIndex + 1) % 4);
         break;
       case 'ArrowLeft':
         newX = Math.max(0, activePlayer.x - 1);
         newDirection = 1;
+        setFrameIndex((prevIndex) => (prevIndex + 1) % 4);
         break;
       case 'ArrowRight':
         newX = Math.min(FIELD_WIDTH - 1, activePlayer.x + 1);
         newDirection = 2;
+        setFrameIndex((prevIndex) => (prevIndex + 1) % 4);
         break;
       case 'w': // Pass
         passBall();
@@ -331,9 +330,9 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
       default:
         return;
     }
-
+  
     updatePlayerPosition(activePlayer.id, newX, newY, newDirection);
-
+  
     if (ball.possessedBy === activePlayer.id) {
       setBallPositionInFrontOfPlayer(newX, newY, newDirection);
     } else {
@@ -379,7 +378,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   return (
     <Field className="game-field">
       {players.map(player => (
-        <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} hasBall={player.hasBall} />
+        <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} frameIndex={frameIndex} hasBall={player.hasBall} />
       ))}
       {aiPlayers.map(player => (
         <AIPlayer
@@ -406,6 +405,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
 };
 
 export default GameField;
+
 
 
 
