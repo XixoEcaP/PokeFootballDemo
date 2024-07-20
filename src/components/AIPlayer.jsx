@@ -179,7 +179,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
     }
 
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
-    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 2, newBallY));
+    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   
@@ -268,7 +268,8 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
             }
             var targetX; 
             var targetY;
-var randomDistance = Math.floor(Math.random() * 8) + 5;
+var randomDistance = Math.floor(Math.random() * 8) + 5; // Random number between 5 and 12
+
             // Check if forward is in shooting range
             if (newX <= 7 && (ball.possessedBy !== 1 && ball.possessedBy !== 2)) {
                 // Function to check if a player is blocking the ball's path
