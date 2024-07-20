@@ -62,8 +62,8 @@ const Site = () => {
       {playerTeam && aiTeam ? (
         <>
           <div className="scoreboard">
-            <p className="score">{playerTeamName} Team: {score.team2}</p>
-            <p className="score">{aiTeamName} Team: {score.team1}</p>
+            <p className="score">{playerTeamName} : {score.team2}</p>
+            <p className="score">{aiTeamName} : {score.team1}</p>
           </div>
           <GameField setScore={setScore} playerTeam={playerTeam} aiTeam={aiTeam} />
           <ul className="instructions">
