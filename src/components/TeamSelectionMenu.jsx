@@ -49,7 +49,7 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
           ))}
         </select>
       </div>
-      <button className="button" onClick={handleStartGame}>Start Game</button>
+      <button className="button" onClick={handleStartGame}>START GAME</button>
     </div>
   );
 };

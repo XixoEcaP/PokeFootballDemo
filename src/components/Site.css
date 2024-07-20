@@ -9,8 +9,9 @@
 body {
   font-family: 'PokemonSolid', sans-serif;
   font-size: 120%;
-  color: ffcc03;
+  color: #ffcb05;
   text-shadow: 1px 1px 4px #3c5aa6;
+  text-decoration-color: #3c5aa6;;
   margin: 0;
   padding: 0;
   background: #00c6ff;
@@ -38,15 +39,19 @@ html, body {
 .title {
   font-size: 1.5em; /* Further reduce font size to save space */
   margin: 5px 0; /* Reduce margins to save space */
+  margin-bottom: -25px;
 
 }
 
 .scoreboard {
+  
   margin: 5px 0; /* Further reduce margins to save space */
   font-size: 1.2em; /* Slightly reduce font size */
   display: flex;
   justify-content: center;
   gap: 20px; /* Reduce gap to save space */
+  margin-top: 0;
+
 }
 
 .score {
@@ -116,6 +121,21 @@ html, body {
   background-color: #f0f0f0;
   border: 2px solid #333;
 }
+.back-button {
+  margin-top: 10px;
+  font-family: 'PokemonSolid', sans-serif;
+
+  background-color: #ffcb05;
+  color:  #3c5aa6;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-button:hover {
+  background-color: #c7a008;
+}
 
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
@@ -132,6 +152,9 @@ html, body {
     transform: scale(0.45); /* Scale down the content */
     transform-origin: top; /* Align content to the top */
     
+  }
+  .title{
+    margin-bottom: 0px;
   }
 
   .instructions {

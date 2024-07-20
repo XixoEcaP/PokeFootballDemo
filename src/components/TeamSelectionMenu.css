@@ -40,15 +40,17 @@
     padding: 10px 20px;
     font-size: 1.2em;
     border-radius: 5px;
-    background-color: #2a75bb;
-    color: #fff;
+    font-family: 'PokemonSolid', sans-serif;
+
+    background-color: #ffcb05;
+    color:  #3c5aa6;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
   }
   
   .button:hover {
-    background-color: #3c5aa6;
+    background-color: #c7a008;
   }
   
 @media only screen and (max-width: 600px) {
