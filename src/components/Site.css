@@ -120,7 +120,7 @@ html, body {
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
   html, body {
-    padding-top: 10px;
+    padding-top: 25px;
     height: 120%;
     width: 100%;
     overflow: hidden;

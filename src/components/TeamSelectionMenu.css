@@ -50,21 +50,9 @@
   .button:hover {
     background-color: #3c5aa6;
   }
-  @media only screen and (max-width: 600px) {
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
   
-    .container {
-      padding: 20px; /* Remove padding to eliminate blank space */
-      justify-content: flex-start; /* Align content to the top to remove blank space */
-      transform: scale(1.8); /* Scale down the content */
-      transform-origin: top; /* Align content to the top */
-    }
-}
 @media only screen and (max-width: 600px) {
+  
     .container2 {
    
         padding-top: 50%;
