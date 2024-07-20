@@ -4,7 +4,7 @@ const teams = {
   Poison: { forward: 'gengar.png', goalkeeper: 'nidoking.png' },
   Fire: { forward: 'arcanine.png', goalkeeper: 'charizard.png' },
   Grass: { forward: 'venusaur.png', goalkeeper: 'exeggutor.png' },
-  Water: { forward: 'blastoise.png', goalkeeper: 'slowbro.png' },
+  Water: { forward: 'blastoise.png', goalkeeper: 'gyrados.png' },
   Normal: { forward: 'tauros.png', goalkeeper: 'snorlax.png' },
   Thunder: { forward: 'jolteon.png', goalkeeper: 'pikachu.png' },
   Bug: { forward: 'scyther.png', goalkeeper: 'butterfree.png' },
@@ -12,8 +12,9 @@ const teams = {
   Ground: { forward: 'marowak.png', goalkeeper: 'sandslash.png' },
   Fighting: { forward: 'primeape.png', goalkeeper: 'machamp.png' },
   Psichic: { forward: 'alakazam.png', goalkeeper: 'mrmime.png' },
-  Ice: { forward: 'lapras.png', goalkeeper: 'jynx.png' },
-  Flying: { forward: 'dragonite.png', goalkeeper: 'aerodactyl.png' },
+  Ice: { forward: 'jynx.png', goalkeeper: 'lapras.png' },
+  Flying: { forward: 'dodrio.png', goalkeeper: 'aerodactyl.png' },
+  Dragon: { forward: 'dragonite..png', goalkeeper: 'dragonair.png' },
   Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
 };
 

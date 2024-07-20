@@ -32,6 +32,9 @@ import snorlax from '../assets/snorlax.png';
 import tauros from '../assets/tauros.png';
 import tyranitar from '../assets/tyranitar.png';
 import venusaur from '../assets/venusaur.png';
+import dodrio from '../assets/dodrio.png';
+import dragonair from '../assets/dragonair.png';
+import gyrados from '../assets/gyrados.png';
 
 const FIELD_WIDTH = 22;
 const FIELD_HEIGHT = 15;
@@ -70,6 +73,9 @@ const getSprite = (type) => {
     case 'tauros': return tauros;
     case 'tyranitar': return tyranitar;
     case 'venusaur': return venusaur;
+    case 'gyrados': return gyrados;
+    case 'dodrio': return dodrio;
+    case 'dragonair': return dragonair;
     default: return gengar; // Default to gengar if type is not recognized
   }
 };

@@ -32,6 +32,9 @@ import snorlax from '../assets/snorlax.png';
 import tauros from '../assets/tauros.png';
 import tyranitar from '../assets/tyranitar.png';
 import venusaur from '../assets/venusaur.png';
+import dodrio from '../assets/dodrio.png';
+import gyrados from '../assets/gyrados.png';
+import dragonair from '../assets/dragonair.png';
 
 const Sprite = styled.div`
   width: 64px;
@@ -143,6 +146,15 @@ const Player = ({ type, x, y, direction, frameIndex }) => {
     case 'venusaur':
       sprite = venusaur;
       break;
+      case 'dodrio':
+        sprite = dodrio;
+        break;
+      case 'gyrados':
+        sprite = gyrados;
+        break;
+      case 'dragonair':
+        sprite = dragonair;
+        break;
     default:
       sprite = gengar; // Default to gengar if type is not recognized
   }
@@ -151,6 +163,7 @@ const Player = ({ type, x, y, direction, frameIndex }) => {
 };
 
 export default Player;
+
 
 
 
