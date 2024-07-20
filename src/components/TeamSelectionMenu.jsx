@@ -6,7 +6,7 @@ const teams = {
   Grass: { forward: 'venusaur.png', goalkeeper: 'exeggutor.png' },
   Water: { forward: 'blastoise.png', goalkeeper: 'gyrados.png' },
   Normal: { forward: 'tauros.png', goalkeeper: 'snorlax.png' },
-  Thunder: { forward: 'jolteon.png', goalkeeper: 'pikachu.png' },
+  Electric: { forward: 'jolteon.png', goalkeeper: 'pikachu.png' },
   Bug: { forward: 'scyther.png', goalkeeper: 'butterfree.png' },
   Rock: { forward: 'onix.png', goalkeeper: 'golem.png' },
   Ground: { forward: 'marowak.png', goalkeeper: 'sandslash.png' },
