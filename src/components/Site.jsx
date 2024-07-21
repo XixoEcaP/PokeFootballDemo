@@ -12,6 +12,7 @@ const Site = () => {
   const [playerTeamName, setPlayerTeamName] = useState('');
   const [aiTeamName, setAITeamName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [controlsDisabled, setControlsDisabled] = useState(false);
 
   const handleKeyPress = (key) => {
     const event = new KeyboardEvent('keydown', { key });
@@ -31,6 +32,7 @@ const Site = () => {
     setPlayerTeamName('');
     setAITeamName('');
     setScore({ team1: 0, team2: 0 });
+    setControlsDisabled(false); // Reset controls when going back to team selection
   };
 
   useEffect(() => {
@@ -55,10 +57,14 @@ const Site = () => {
             <p className="score">{playerTeamName} : {score.team2}</p>
             <p className="score">{aiTeamName} : {score.team1}</p>
           </div>
-         
-         
-     <GameField setScore={setScore} playerTeam={playerTeam} aiTeam={aiTeam} />
-     <button className="back-button" onClick={handleBackToTeamSelection}>Back</button>
+          <GameField
+            setScore={setScore}
+            playerTeam={playerTeam}
+            aiTeam={aiTeam}
+            controlsDisabled={controlsDisabled}
+            setControlsDisabled={setControlsDisabled}
+          />
+          <button className="back-button" onClick={handleBackToTeamSelection}>Back</button>
           <ul className="instructions">
             <li className="instruction">"a" change player</li>
             <li className="instruction">"s" shoot</li>
@@ -131,11 +137,12 @@ const Site = () => {
           </div>
         </>
       ) : (
-        <TeamSelectionMenu 
-          setPlayerTeam={setPlayerTeam} 
-          setAITeam={setAITeam} 
+        <TeamSelectionMenu
+          setPlayerTeam={setPlayerTeam}
+          setAITeam={setAITeam}
           setPlayerTeamName={setPlayerTeamName}
-          setAITeamName={setAITeamName} 
+          setAITeamName={setAITeamName}
+          setControlsDisabled={setControlsDisabled} // Pass the setControlsDisabled function here
         />
       )}
     </div>
@@ -143,6 +150,9 @@ const Site = () => {
 };
 
 export default Site;
+
+
+
 
 
 

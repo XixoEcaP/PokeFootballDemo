@@ -5,6 +5,8 @@ import AIPlayer from './AIPlayer';
 import Ball from './Ball';
 import field from '../assets/field.png';
 import goal from '../assets/goal.png';
+import won from '../assets/won.png';
+import lost from '../assets/lost.png';
 
 const TILE_SIZE = 32;
 const FIELD_WIDTH = 22;
@@ -42,6 +44,17 @@ const GoalOverlay = styled.img.attrs(props => ({
   z-index: 1;
 `;
 
+const ResultOverlay = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: auto;
+  display: ${props => (props.show ? 'block' : 'none')};
+  z-index: 2;
+`;
+
 const walkableMap = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -60,7 +73,7 @@ const walkableMap = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const GameField = ({ setScore, playerTeam, aiTeam }) => {
+const GameField = ({ setScore, playerTeam, aiTeam, controlsDisabled, setControlsDisabled }) => {
   const initialPlayerPositions = useMemo(() => [
     { id: 1, type: playerTeam.forward.split('.')[0], x: 7, y: 2, direction: 0, hasBall: false },
     { id: 2, type: playerTeam.goalkeeper.split('.')[0], x: 1, y: 7, direction: 0, hasBall: false }
@@ -79,6 +92,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   const [activePlayerId, setActivePlayerId] = useState(1);
   const [goalScored, setGoalScored] = useState(false);
   const [goalOverlayVisible, setGoalOverlayVisible] = useState(false);
+  const [resultOverlay, setResultOverlay] = useState(null); // 'won' or 'lost'
   const [goalkeeperPosition] = useState({ x: 20, y: 7 });
   const [movementInterval, setMovementInterval] = useState(null);
   const [frameIndex, setFrameIndex] = useState(0);
@@ -100,16 +114,36 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     if (!goalScored && lastShot && (tileValue === 2 || tileValue === 3)) {
       setGoalScored(true);
       setGoalOverlayVisible(true);
-      if (tileValue === 2) {
-        setScore(score => ({ ...score, team1: score.team1 + 1 }));
-      } else if (tileValue === 3) {
-        setScore(score => ({ ...score, team2: score.team2 + 1 }));
-      }
+
+
       setTimeout(() => {
-        resetPositions();
-        setGoalScored(false);
         setGoalOverlayVisible(false);
-      }, 1000); // Delay for 1 second before resetting positions
+        setTimeout(() => {
+          if (tileValue === 2) {
+            setScore(score => {
+              const newScore = { ...score, team1: score.team1 + 1 };
+              if (newScore.team1 >= 5) {
+                setControlsDisabled(true);
+                setResultOverlay('lost');
+            
+              }
+              return newScore;
+            });
+          } else if (tileValue === 3) {
+            setScore(score => {
+              const newScore = { ...score, team2: score.team2 + 1 };
+              if (newScore.team2 >= 5) {
+                setControlsDisabled(true);
+                setResultOverlay('won');
+              
+              }
+              return newScore;
+            });
+          }
+          setGoalScored(false);
+          resetPositions();
+        }, 500); // Delay for result overlay after goal overlay disappears
+      }, 1000); // Delay for goal overlay
     } else {
       if (tileValue === 18) {
         setBall(ball => ({
@@ -133,7 +167,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
         }));
       }
     }
-  }, [ball, goalScored, resetPositions, setScore]);
+  }, [ball, goalScored, resetPositions, setScore,setControlsDisabled]);
 
   const updatePlayerPosition = useCallback((id, x, y, direction) => {
     if (!isWalkable(x, y)) return;
@@ -294,6 +328,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
   }, [activePlayerId]);
 
   const handleKeyDown = useCallback((e) => {
+    if (controlsDisabled) return;
+
     let activePlayer = players.find(player => player.id === activePlayerId);
     let newX = activePlayer.x;
     let newY = activePlayer.y;
@@ -360,7 +396,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     changeControl,
     updatePlayerPosition,
     setBallPositionInFrontOfPlayer,
-    checkCollision
+    checkCollision,
+    controlsDisabled
   ]);
 
   const handleKeyUp = useCallback(() => {
@@ -391,6 +428,8 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
     <Container className="game-container">
       <Field className="game-field">
         <GoalOverlay src={goal} $show={goalOverlayVisible} />
+        <ResultOverlay src={won} show={resultOverlay === 'won'} />
+        <ResultOverlay src={lost} show={resultOverlay === 'lost'} />
         {players.map(player => (
           <Player key={player.id} type={player.type} x={player.x} y={player.y} direction={player.direction} frameIndex={frameIndex} hasBall={player.hasBall} />
         ))}
@@ -411,6 +450,7 @@ const GameField = ({ setScore, playerTeam, aiTeam }) => {
             updatePlayerPosition={updatePlayerPosition}
             players={players}
             setActivePlayerId={setActivePlayerId}
+            setControlsDisabled={setControlsDisabled}
           />
         ))}
         <Ball x={ball.x} y={ball.y} direction={ball.direction} />

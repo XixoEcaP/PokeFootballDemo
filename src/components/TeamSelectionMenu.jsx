@@ -19,7 +19,7 @@ const teams = {
   Dark: { forward: 'houndoom.png', goalkeeper: 'tyranitar.png' }
 };
 
-const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAITeamName }) => {
+const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAITeamName, setControlsDisabled }) => {
   const [playerTeam, setPlayerTeamLocal] = useState('Poison');
   const [aiTeam, setAITeamLocal] = useState('Fire');
 
@@ -28,6 +28,7 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
     setAITeam(teams[aiTeam]);
     setPlayerTeamName(`${playerTeam} Team`);
     setAITeamName(`${aiTeam} Team`);
+    setControlsDisabled(false); // Ensure controls are enabled when the game starts
   };
 
   return (
@@ -55,6 +56,7 @@ const TeamSelectionMenu = ({ setPlayerTeam, setAITeam, setPlayerTeamName, setAIT
 };
 
 export default TeamSelectionMenu;
+
 
 
 
