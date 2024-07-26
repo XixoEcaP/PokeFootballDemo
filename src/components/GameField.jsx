@@ -250,7 +250,7 @@ const GameField = ({ setScore, playerTeam, aiTeam, controlsDisabled, setControls
 
   const isGoalkeeperBlocking = useCallback((newBallX, newBallY) => {
     const { x: goalkeeperX, y: goalkeeperY } = goalkeeperPosition;
-    return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1 || newBallY === goalkeeperY - 1) && newBallX >= goalkeeperX;
+    return (newBallY === goalkeeperY || newBallY === goalkeeperY + 1 ) && newBallX >= goalkeeperX;
   }, [goalkeeperPosition]);
 
   const shootBallVertically = useCallback(() => {
