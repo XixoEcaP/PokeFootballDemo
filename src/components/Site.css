@@ -124,7 +124,8 @@ html, body {
   border: 2px solid #333;
 }
 .back-button {
-  margin-top: 10px;
+  margin-top: 0px;
+  margin-bottom: 5px;
   font-family: 'PokemonSolid', sans-serif;
 
   background-color: #ffcb05;

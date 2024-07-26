@@ -57,6 +57,7 @@ const Site = () => {
             <p className="score">{playerTeamName} : {score.team2}</p>
             <p className="score">{aiTeamName} : {score.team1}</p>
           </div>
+          <button className="back-button" onClick={handleBackToTeamSelection}>Back</button>
           <GameField
             setScore={setScore}
             playerTeam={playerTeam}
@@ -64,7 +65,7 @@ const Site = () => {
             controlsDisabled={controlsDisabled}
             setControlsDisabled={setControlsDisabled}
           />
-          <button className="back-button" onClick={handleBackToTeamSelection}>Back</button>
+        
           <ul className="instructions">
             <li className="instruction">"a" change player</li>
             <li className="instruction">"s" shoot</li>
