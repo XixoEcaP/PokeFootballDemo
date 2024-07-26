@@ -5,13 +5,12 @@
   src: url('../assets/Pokemon Solid.ttf') format('truetype');
 }
 
-
 body {
   font-family: 'PokemonSolid', sans-serif;
-  font-size: 120%;
+  font-size: 1vw;
   color: #ffcb05;
   text-shadow: 1px 1px 4px #3c5aa6;
-  text-decoration-color: #3c5aa6;;
+  text-decoration-color: #3c5aa6;
   margin: 0;
   padding: 0;
   background: #00c6ff;
@@ -21,7 +20,7 @@ body {
 }
 
 html, body {
-  height: max-content;
+  height: 100%;
   width: 100%;
 }
 
@@ -35,46 +34,32 @@ html, body {
   justify-content: flex-start; /* Align content to the top to remove blank space */
   box-sizing: border-box; /* Include padding in the element's total width and height */
 }
-.game-field{
-  height: 100%;
-  width: 100%;
-}
 
 .title {
   font-size: 1.5em; /* Further reduce font size to save space */
- margin-top: 0;
+  margin-top: 0;
   margin-bottom: -25px;
-
 }
 
 .scoreboard {
-  
   margin: 5px 0; /* Further reduce margins to save space */
   font-size: 1.2em; /* Slightly reduce font size */
   display: flex;
   justify-content: center;
   gap: 20px; /* Reduce gap to save space */
   margin-top: 0;
-
 }
 
 .score {
   margin: 0;
- 
 }
 
 .instructions {
-  display: fixed;
+  display: block;
   list-style-type: none;
   padding: 0;
   margin: 5px 0; /* Further reduce margins to save space */
-  font-size: 1.em; /* Slightly reduce font size */
-  
-}
-
-.instructions {
-  font-size: 14px; /* Ensure instructions are visible */
-  margin: 10px 0; /* Adjust margin */
+  font-size: 1em; /* Slightly reduce font size */
 }
 
 #mobile {
@@ -91,7 +76,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 120px; /* Increase width */
+  width: 10vw; /* Use viewport width for size */
 }
 
 .horizontal-buttons {
@@ -101,10 +86,10 @@ html, body {
 }
 
 .directional-buttons button {
-  width: 60px; /* Increase button size */
-  height: 60px; /* Increase button size */
-  margin: 10px; /* Increase margin */
-  font-size: 24px; /* Adjust font size */
+  width: 5vw; /* Use viewport width for size */
+  height: 5vw; /* Use viewport width for size */
+  margin: 1vw; /* Use viewport width for margin */
+  font-size: 1.5vw; /* Adjust font size with viewport width */
   cursor: pointer;
   border-radius: 50%;
   background-color: #f0f0f0;
@@ -115,29 +100,29 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 15px; /* Increase gap between buttons */
+  gap: 1.5vw; /* Use viewport width for gap */
 }
 
 .action-buttons button {
-  width: 60px; /* Increase button size */
-  height: 60px; /* Increase button size */
-  font-size: 24px; /* Adjust font size */
+  width: 5vw; /* Use viewport width for size */
+  height: 5vw; /* Use viewport width for size */
+  font-size: 1.5vw; /* Adjust font size with viewport width */
   cursor: pointer;
   border-radius: 50%;
   background-color: #f0f0f0;
   border: 2px solid #333;
 }
+
 .back-button {
   margin-top: 0px;
   margin-bottom: 5px;
   font-family: 'PokemonSolid', sans-serif;
-
   background-color: #ffcb05;
-  color:  #3c5aa6;
+  color: #3c5aa6;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1.5vw; /* Use viewport width for size */
 }
 
 .back-button:hover {
@@ -147,45 +132,44 @@ html, body {
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
   html, body {
-    padding-top:0;
-    height: 120%;
+    padding-top: 0;
+    height: 100%;
     width: 100%;
-    overflow: hidden;
+    overflow-y: auto; /* Allow vertical scrolling */
   }
 
   .container {
-  
     justify-content: flex-start; /* Align content to the top to remove blank space */
-    transform: scale(0.45); /* Scale down the content */
+    transform: scale(0.75); /* Adjust scale to fit better */
     transform-origin: top; /* Align content to the top */
-    
   }
-  .title{
+
+  .title {
     margin-bottom: 0px;
   }
 
   .instructions {
-    font-size: 0px;
+    font-size: 3vw; /* Ensure instructions are visible */
+    margin: 10px 0; /* Adjust margin */
   }
 
   #mobile {
-    font-size: 36px;
+    font-size: 4vw; /* Adjust size for visibility */
   }
 
   .controls {
     display: flex; /* Show controls on mobile */
-    flex-direction: row;
-    justify-content: space-around;
-    width: 280%;
-    margin-left: -20px;
-    transform: scale(0.95);
+    flex-direction: column;
+    justify-content: center;
+    width: 100%; /* Adjust width to fit better */
+    transform: scale(0.75); /* Adjust scale to fit better */
+    transform-origin: center; /* Center the controls */
   }
 
   .directional-buttons {
     flex-direction: column;
     align-items: center;
     width: auto;
-   
   }
 
   .horizontal-buttons {
@@ -195,25 +179,24 @@ html, body {
   }
 
   .directional-buttons button {
-    width: 120px; /* Increase button size */
-    height: 120px; /* Increase button size */
-    margin: 20px;
-    margin-left: 120px; /* Increase margin */
-    font-size: 24px; /* Adjust font size */
+    width: 15vw; /* Adjust button size */
+    height: 15vw; /* Adjust button size */
+    margin: 2vw; /* Adjust margin */
+    font-size: 3vw; /* Adjust font size */
   }
 
   .action-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px; /* Ensure consistent gap */
+    gap: 3vw; /* Ensure consistent gap */
   }
 
   .action-buttons button {
-   
-    margin: 40px; 
-    width: 120px; /* Increase button size */
-    height: 120px; /* Increase button size */
-    font-size: 18px; /* Adjust font size */
+    margin: 4vw; /* Adjust margin */
+    width: 15vw; /* Adjust button size */
+    height: 15vw; /* Adjust button size */
+    font-size: 3vw; /* Adjust font size */
   }
 }
+
