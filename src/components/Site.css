@@ -154,6 +154,7 @@ html, body {
 @media only screen and (max-height: 800px) and (min-width: 601px){
   html, body {
  transform: scale(0.9);
+ height: 110%;
 padding-top: 0;
  margin-top: -30px;
 
@@ -181,7 +182,7 @@ padding-top: 0;
     justify-content: flex-start; /* Align content to the top to remove blank space */
     transform: scale(0.45); /* Scale down the content */
     transform-origin: top; /* Align content to the top */
-    
+      
   }
   .title{
     margin-bottom: 0px;
