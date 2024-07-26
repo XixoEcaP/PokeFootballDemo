@@ -35,6 +35,10 @@ html, body {
   justify-content: flex-start; /* Align content to the top to remove blank space */
   box-sizing: border-box; /* Include padding in the element's total width and height */
 }
+.game-field{
+  height: 100%;
+  width: 100%;
+}
 
 .title {
   font-size: 1.5em; /* Further reduce font size to save space */
