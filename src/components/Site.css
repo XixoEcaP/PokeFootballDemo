@@ -17,7 +17,7 @@ body {
   background: #00c6ff;
   background: -webkit-linear-gradient(top, #1e5799 0%, #00c6ff 25%, #26c6da 55%, #7AE3EF 100%);
   background: linear-gradient(to bottom, #1e5799 0%, #00c6ff 25%, #26c6da 55%, #7AE3EF 100%);
-  overflow: hidden; /* Prevent scrolling */
+  overflow: auto; /* Prevent scrolling */
 }
 
 html, body {
