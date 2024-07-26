@@ -207,7 +207,7 @@ const GameField = ({ setScore, playerTeam, aiTeam, controlsDisabled, setControls
     }
 
     newBallX = Math.max(1, Math.min(FIELD_WIDTH - 2, newBallX));
-    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 2, newBallY));
+    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   }, []);

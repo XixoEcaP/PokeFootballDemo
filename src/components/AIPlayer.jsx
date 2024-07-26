@@ -175,7 +175,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
     }
 
     newBallX = Math.max(0, Math.min(FIELD_WIDTH - 1, newBallX));
-    newBallY = Math.max(0, Math.min(FIELD_HEIGHT - 1, newBallY));
+    newBallY = Math.max(0, Math.min(FIELD_HEIGHT -1 , newBallY));
 
     setBall(ball => ({ ...ball, x: newBallX, y: newBallY, direction, lastShot: false }));
   }, [setBall]);
@@ -222,15 +222,10 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
       } else {
         setFirstNullHandled(false);
         setHasShot(false); // Reset hasShot when ball is possessed by player 1 or 2
-        if (ball.possessedBy !== null && ball.possessedBy < 3) {
+        if ((ball.possessedBy !== null && ball.possessedBy < 3)) {
+          
           // Move towards the ball if possessed by player 1 or 2
-          if (ball.x > player.x) {
-            newX++;
-            newDirection = 2; // Right
-          } else if (ball.x < player.x) {
-            newX--;
-            newDirection = 1; // Left
-          }
+      
           if (ball.y > player.y) {
             newY++;
             newDirection = 0; // Down
@@ -238,26 +233,44 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
             newY--;
             newDirection = 3; // Up
           }
+          if (ball.x > player.x) {
+            newX++;
+            newDirection = 2; // Right
+          } else if (ball.x < player.x) {
+            newX--;
+            newDirection = 1; // Left
+          }
         }
       }
     }
 
-    if (isWalkable(newX, newY)) {
-      setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY, direction: newDirection }));
-      setFrameIndex(prevIndex => (prevIndex + 1) % 4); // Update frame index for animation
-
-      // Check collision with ball
+    if (isWalkable(newX, newY)||isWalkable(newX, newY-1)) {
       if (Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1 && ball.x === newX && ball.y === newY) {
-        if (Math.random() > 0.5) { // Add randomness for possession
+        if (Math.random() > 0.1) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
         } else {
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
         }
-      }
 
+    }
+
+    if (isWalkable(newX, newY)){
+      setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY, direction: newDirection }));
+      setFrameIndex(prevIndex => (prevIndex + 1) % 4); // Update frame index for animation
+
+      // Check collision with ball
+    
+      }
+    
+     
       // Update ball position if player has possession
       if (player.hasBall) {
+
+
+
+
+
         if (ball.possessedBy !== 1 && ball.possessedBy !== 2 && ball.possessedBy !== null) {
           setBallPositionInFrontOfPlayer(newX, newY, newDirection);
         }
@@ -302,6 +315,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
           setHasShot(true); // Set hasShot to true after shooting
           setTimeout(() => setHasShot(false), 2000); // Reset hasShot after 2 seconds
         } else {
+          console.log(newY)
           let targetX = Math.max(newX - randomDistance, 0);
           let targetY = newY;
           if (newX <= 1) {
@@ -312,7 +326,9 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
           }
         }
       }
-    } else {
+    } else { 
+      
+      
       const randomDistance = Math.floor(Math.random() * 8) + 5; // Random number between 5 and 12
       let targetX = Math.max(newX - randomDistance, 0);
       let targetY = newY;
@@ -323,6 +339,12 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         setPlayer(prevPlayer => ({ ...prevPlayer, x: altX, y: altY, direction: 2 }));
         setFrameIndex(prevIndex => (prevIndex + 1) % 4); // Update frame index for animation
       }
+    
+ 
+      
+    
+      
+
     }
   }, [ball, player, players, setBall, firstNullHandled, hasShot, setPlayer, setBallPositionInFrontOfPlayer, setActivePlayerId, isWalkable]);
 
