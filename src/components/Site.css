@@ -140,6 +140,17 @@ html, body {
   background-color: #c7a008;
 }
 
+@media only screen and (max-width: 1000px) {
+  html, body {
+ transform: scale(0.95);
+  }
+}
+
+@media only screen and (max-height: 800px) {
+  html, body {
+ transform: scale(0.9);
+  }
+}
 
 @media only screen and (max-width: 800px) {
   html, body {
