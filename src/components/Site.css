@@ -20,6 +20,10 @@ body {
   overflow: hidden; /* Prevent scrolling */
 }
 
+html, body {
+  height: 100%;
+  width: 100%;
+}
 
 .container {
   text-align: center;
@@ -135,7 +139,7 @@ body {
 
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
-  body {
+  html, body {
     padding-top:0;
     height: 120%;
     width: 100%;
