@@ -60,6 +60,7 @@ html, body {
 }
 
 .instructions {
+  display: fixed;
   list-style-type: none;
   padding: 0;
   margin: 5px 0; /* Further reduce margins to save space */
