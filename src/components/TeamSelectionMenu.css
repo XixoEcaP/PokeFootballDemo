@@ -12,6 +12,7 @@
     font-family: 'PokemonSolid', sans-serif;
     padding: 20px;
     width: 100%;
+    overflow: auto;
   }
   
   .title {

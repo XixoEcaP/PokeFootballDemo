@@ -17,7 +17,7 @@ body {
   background: #00c6ff;
   background: -webkit-linear-gradient(top, #1e5799 0%, #00c6ff 25%, #26c6da 55%, #7AE3EF 100%);
   background: linear-gradient(to bottom, #1e5799 0%, #00c6ff 25%, #26c6da 55%, #7AE3EF 100%);
-  overflow: auto; /* Prevent scrolling */
+  overflow: hidden; /* Prevent scrolling */
 }
 
 html, body {
@@ -68,8 +68,9 @@ html, body {
   
 }
 
-.instruction {
-  margin: 2px 0; /* Reduce margin between instructions */
+.instructions {
+  font-size: 14px; /* Ensure instructions are visible */
+  margin: 10px 0; /* Adjust margin */
 }
 
 #mobile {
