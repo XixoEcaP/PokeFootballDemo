@@ -38,7 +38,7 @@ html, body {
 
 .title {
   font-size: 1.5em; /* Further reduce font size to save space */
-  margin: 5px 0; /* Reduce margins to save space */
+ margin-top: 0;
   margin-bottom: -25px;
 
 }

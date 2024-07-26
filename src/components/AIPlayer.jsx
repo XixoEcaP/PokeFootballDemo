@@ -250,7 +250,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
 
 
       if (Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1 ) {
-        if (Math.random() > 0) { // Add randomness for possession
+        if (Math.random() > 0.1) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
         } else {
