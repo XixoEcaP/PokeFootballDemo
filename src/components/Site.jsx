@@ -58,7 +58,7 @@ const Site = () => {
             <p className="score">{aiTeamName} : {score.team1}</p>
           </div>
           <button className="back-button" onClick={handleBackToTeamSelection}>Back</button>
-          <GameField
+          <GameField className="game-field"
             setScore={setScore}
             playerTeam={playerTeam}
             aiTeam={aiTeam}
