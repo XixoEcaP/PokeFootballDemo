@@ -223,30 +223,34 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         setFirstNullHandled(false);
         setHasShot(false); // Reset hasShot when ball is possessed by player 1 or 2
         if ((ball.possessedBy !== null && ball.possessedBy < 3)) {
-          
-          // Move towards the ball if possessed by player 1 or 2
       
+          if(player.y<13||ball.y<13){
           if (ball.y > player.y) {
             newY++;
             newDirection = 0; // Down
           } else if (ball.y < player.y) {
             newY--;
             newDirection = 3; // Up
-          }
+          };
+        }
+          
+          // Move towards the ball if possessed by player 1 or 2
           if (ball.x > player.x) {
             newX++;
             newDirection = 2; // Right
           } else if (ball.x < player.x) {
             newX--;
             newDirection = 1; // Left
-          }
+          } 
+        
+       
         }
       }
     }
 
-    if (isWalkable(newX, newY)||isWalkable(newX, newY-1)) {
-      if (Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1 && ball.x === newX && ball.y === newY) {
-        if (Math.random() > 0.1) { // Add randomness for possession
+
+      if (Math.abs(newX - ball.x) <= 1 && Math.abs(newY - ball.y) <= 1 ) {
+        if (Math.random() > 0) { // Add randomness for possession
           setBall(ball => ({ ...ball, possessedBy: player.id }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: true }));
         } else {
@@ -254,7 +258,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
         }
 
     }
-
+    if (isWalkable(newX, newY)||isWalkable(newX, newY+1)) {
     if (isWalkable(newX, newY)){
       setPlayer(prevPlayer => ({ ...prevPlayer, x: newX, y: newY, direction: newDirection }));
       setFrameIndex(prevIndex => (prevIndex + 1) % 4); // Update frame index for animation
@@ -313,7 +317,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
           setBall(ball => ({ ...ball, x: targetX, y: targetY, possessedBy: null, lastShot: true }));
           setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
           setHasShot(true); // Set hasShot to true after shooting
-          setTimeout(() => setHasShot(false), 2000); // Reset hasShot after 2 seconds
+          setTimeout(() => setHasShot(false), 500); // Reset hasShot after 2 seconds
         } else {
           console.log(newY)
           let targetX = Math.max(newX - randomDistance, 0);
@@ -322,7 +326,7 @@ const AIPlayer = ({ id, type, initialX, initialY, role, ball, setBall, setAIPlay
             setBall(ball => ({ ...ball, x: targetX, y: targetY, possessedBy: null, lastShot: true }));
             setPlayer(prevPlayer => ({ ...prevPlayer, hasBall: false }));
             setHasShot(true); // Set hasShot to true after shooting
-            setTimeout(() => setHasShot(false), 2000); // Reset hasShot after 2 seconds
+            setTimeout(() => setHasShot(false), 500); // Reset hasShot after 2 seconds
           }
         }
       }
