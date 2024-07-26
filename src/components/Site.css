@@ -5,12 +5,13 @@
   src: url('../assets/Pokemon Solid.ttf') format('truetype');
 }
 
+
 body {
   font-family: 'PokemonSolid', sans-serif;
-  font-size: 1vw;
+  font-size: 120%;
   color: #ffcb05;
   text-shadow: 1px 1px 4px #3c5aa6;
-  text-decoration-color: #3c5aa6;
+  text-decoration-color: #3c5aa6;;
   margin: 0;
   padding: 0;
   background: #00c6ff;
@@ -20,7 +21,7 @@ body {
 }
 
 html, body {
-  height: 100%;
+  height: max-content;
   width: 100%;
 }
 
@@ -37,29 +38,39 @@ html, body {
 
 .title {
   font-size: 1.5em; /* Further reduce font size to save space */
-  margin-top: 0;
+ margin-top: 0;
   margin-bottom: -25px;
+
 }
 
 .scoreboard {
+  
   margin: 5px 0; /* Further reduce margins to save space */
   font-size: 1.2em; /* Slightly reduce font size */
   display: flex;
   justify-content: center;
   gap: 20px; /* Reduce gap to save space */
   margin-top: 0;
+
 }
 
 .score {
   margin: 0;
+ 
 }
 
 .instructions {
-  display: block;
+  display: fixed;
   list-style-type: none;
   padding: 0;
   margin: 5px 0; /* Further reduce margins to save space */
-  font-size: 1em; /* Slightly reduce font size */
+  font-size: 1.em; /* Slightly reduce font size */
+  
+}
+
+.instructions {
+  font-size: 14px; /* Ensure instructions are visible */
+  margin: 10px 0; /* Adjust margin */
 }
 
 #mobile {
@@ -76,7 +87,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 10vw; /* Use viewport width for size */
+  width: 120px; /* Increase width */
 }
 
 .horizontal-buttons {
@@ -86,10 +97,10 @@ html, body {
 }
 
 .directional-buttons button {
-  width: 5vw; /* Use viewport width for size */
-  height: 5vw; /* Use viewport width for size */
-  margin: 1vw; /* Use viewport width for margin */
-  font-size: 1.5vw; /* Adjust font size with viewport width */
+  width: 60px; /* Increase button size */
+  height: 60px; /* Increase button size */
+  margin: 10px; /* Increase margin */
+  font-size: 24px; /* Adjust font size */
   cursor: pointer;
   border-radius: 50%;
   background-color: #f0f0f0;
@@ -100,36 +111,41 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 1.5vw; /* Use viewport width for gap */
+  gap: 15px; /* Increase gap between buttons */
 }
 
 .action-buttons button {
-  width: 5vw; /* Use viewport width for size */
-  height: 5vw; /* Use viewport width for size */
-  font-size: 1.5vw; /* Adjust font size with viewport width */
+  width: 60px; /* Increase button size */
+  height: 60px; /* Increase button size */
+  font-size: 24px; /* Adjust font size */
   cursor: pointer;
   border-radius: 50%;
   background-color: #f0f0f0;
   border: 2px solid #333;
 }
-
 .back-button {
   margin-top: 0px;
   margin-bottom: 5px;
   font-family: 'PokemonSolid', sans-serif;
+
   background-color: #ffcb05;
-  color: #3c5aa6;
+  color:  #3c5aa6;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1vw; /* Use viewport width for size */
+  font-size: 16px;
 }
 
 .back-button:hover {
   background-color: #c7a008;
 }
 
-/* Media queries for mobile devices */
+
+@media only screen and (max-width: 800px) {
+  html, body {
+ transform: scale(0.9);
+  }
+}
 /* Media queries for mobile devices */
 @media only screen and (max-width: 600px) {
   html, body {
@@ -203,5 +219,3 @@ html, body {
     font-size: 18px; /* Adjust font size */
   }
 }
-
-
